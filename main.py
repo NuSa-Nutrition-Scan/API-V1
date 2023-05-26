@@ -20,7 +20,6 @@ async def login(body: AuthBody, response: Response):
     response.status_code = result.status_code
     return result.data
 
-
 @app.put("/refresh")
 async def refresh(body: RefreshTokenBody, response: Response):
     result = pkg.refresh(body.refresh_token)
@@ -28,7 +27,7 @@ async def refresh(body: RefreshTokenBody, response: Response):
     return result.data
 
 @app.get("/info/{id_token}")
-async def refresh(id_token: str, response: Response):
+async def user_info(id_token: str, response: Response):
     result = pkg.get_user_info(id_token)
     response.status_code = result.status_code
     return result.data
