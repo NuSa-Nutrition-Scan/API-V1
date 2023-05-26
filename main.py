@@ -31,3 +31,13 @@ async def user_info(id_token: str, response: Response):
     result = pkg.get_user_info(id_token)
     response.status_code = result.status_code
     return result.data
+
+@app.post("/camera")
+async def insert_picture():
+    # TODO
+    return ""
+
+@app.get("/{id_token}/calories")
+async def get_user_calories():
+    # TODO
+    return ""
