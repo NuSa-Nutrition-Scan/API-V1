@@ -87,12 +87,45 @@ class AuthService:
         except Exception as e:
             print(e)
             return result.InternalErr()
+        
+    def refresh_token(self, refresh_token: str) -> result.Result:
+        request_ref = f"https://securetoken.googleapis.com/v1/token?key={self.api_key}"
+        headers = {"content-type": "application/json; charset=UTF-8"}
+
+        data = json.dumps({"grantType": "refresh_token", "refreshToken": refresh_token})
+        
+        try:
+            response = requests.post(request_ref, headers=headers, data=data)
+            response.raise_for_status()
+            
+            obj = response.json()
+
+            resp = {
+                "id": obj["user_id"],
+                "token": obj["id_token"],
+                "refresh_token": obj["refresh_token"],
+                "expires_in": obj["expires_in"],
+            }
+
+            return result.OK(resp)
+        
+        except requests.exceptions.HTTPError as e:
+            code = e.response.status_code
+            txt = self._extract_response_text(e.response.text, 'message')
+            msg = self._get_error_msg_by_firebase_err(txt)
+
+            return result.Err(code, msg)
+
+        except Exception as e:
+            print(e)
+            return result.InternalErr()
 
     def _extract_response_text(self, data: Any, key: str) -> str:
         data = json.loads(data)
         return data["error"][key]
 
     def _get_error_msg_by_firebase_err(self, msg: str) -> str:
+        # authentication
         if "EMAIL_NOT_FOUND" in msg:
             return "Unknown user"
 
@@ -104,6 +137,16 @@ class AuthService:
 
         if "TOO_MANY_ATTEMPT" in msg:
             return "Too many attempt. Please try again later"
-
+        
+        # refresh token
+        if "TOKEN_EXPIRED" in msg:
+            return "Session has expired. Please sign in again"
+        
+        if ("USER_DISABLED" in msg) or ("USER_NOT_FOUND" in msg):
+            return "Unknown user"
+        
+        if ("INVALID_REFRESH_TOKEN" in msg) or ("MISSING_REFRESH_TOKEN" in msg):
+            return "Bad credentials"
+        
         print(msg)
         return "Bad credentials"

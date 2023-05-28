@@ -1,8 +1,8 @@
-from .dto import SignUpDTO, SignInDTO
+from .dto import SignUpDTO, SignInDTO, RefreshTokenDTO
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 from service.authentication import AuthService
-from .deps import extract_token, User
+from .security import extract_token, User
 
 
 def routes() -> APIRouter:
@@ -22,6 +22,11 @@ def routes() -> APIRouter:
     @router.post("/signout")
     async def signout(user: User = Depends(extract_token)) -> JSONResponse:
         result = service.revoke_token(user.user_id)
-        return JSONResponse(status_code=200, content=result)
+        return JSONResponse(status_code=result["code"], content=result)
+
+    @router.put("/refresh")
+    async def refresh(body: RefreshTokenDTO) -> JSONResponse:
+        result = service.refresh_token(body.refresh_token)
+        return JSONResponse(status_code=result["code"], content=result)
 
     return router

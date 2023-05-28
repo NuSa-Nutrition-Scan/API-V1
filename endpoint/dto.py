@@ -12,7 +12,7 @@ class SignInDTO(BaseModel):
     password: str = Field(min_length=8, max_length=100)
 
 
-class RefreshTokenBody(BaseModel):
+class RefreshTokenDTO(BaseModel):
     refresh_token: str
 
 
