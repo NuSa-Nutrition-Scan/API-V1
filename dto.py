@@ -1,8 +1,10 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class AuthBody(BaseModel):
-    email: str
-    password: str
+    name: str = Field(max_length=50)
+    email: str = Field(max_length=100)
+    password: str = Field(min_length=8, max_length=100)
+
 
 class RefreshTokenBody(BaseModel):
     refresh_token: str

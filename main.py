@@ -1,43 +1,20 @@
-import pkg
-from fastapi import FastAPI, Response
-from dto import AuthBody, RefreshTokenBody
+import firebase_admin
+from firebase_admin import credentials
+from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+from customizer import validation_body_exception_handler, http_customize_handler
+from endpoint.auth import routes as auth_routes
+
+cred = credentials.Certificate("serviceAccountKey.json")
+fb = firebase_admin.initialize_app(credential=cred)
 
 app = FastAPI()
+validation_body_exception_handler(app)
+http_customize_handler(app)
+
+app.include_router(auth_routes())
 
 @app.get("/")
 async def index():
-    return {"msg": "OK"}
+    return JSONResponse(status_code=200, content={ "code": 200, "msg": "OK" })
 
-@app.post("/signup")
-async def signup(body: AuthBody, response: Response):
-    result = pkg.signup(body.email, body.password)
-    response.status_code = result.status_code
-    return result.data
-
-@app.post("/signin")
-async def login(body: AuthBody, response: Response):
-    result = pkg.signin(body.email, body.password)
-    response.status_code = result.status_code
-    return result.data
-
-@app.put("/refresh")
-async def refresh(body: RefreshTokenBody, response: Response):
-    result = pkg.refresh(body.refresh_token)
-    response.status_code = result.status_code
-    return result.data
-
-@app.get("/info/{id_token}")
-async def user_info(id_token: str, response: Response):
-    result = pkg.get_user_info(id_token)
-    response.status_code = result.status_code
-    return result.data
-
-@app.post("/camera")
-async def insert_picture():
-    # TODO
-    return ""
-
-@app.get("/{id_token}/calories")
-async def get_user_calories():
-    # TODO
-    return ""

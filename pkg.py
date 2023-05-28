@@ -57,3 +57,8 @@ def get_user_info(id_token: str) -> Result:
     
     result = Result(request_object.status_code, request_object.json())
     return result
+
+
+def ban_token(token: str) -> Result:
+    result = Result()
+    return result

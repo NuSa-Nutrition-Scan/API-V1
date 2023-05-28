@@ -1,4 +1,5 @@
 __pycache__
+__pycache__/
 serviceAccountKey.json
 .env
 example_result.txt
