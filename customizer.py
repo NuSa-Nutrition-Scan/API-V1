@@ -6,7 +6,7 @@ from fastapi.encoders import jsonable_encoder
 
 def validation_body_exception_handler(app: FastAPI) -> callable:
     @app.exception_handler(RequestValidationError)
-    async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
         try:
             raw_err = exc.raw_errors
             error_wrapper = raw_err[0]
@@ -37,7 +37,7 @@ def validation_body_exception_handler(app: FastAPI) -> callable:
 
 def http_customize_handler(app: FastAPI) -> callable:
     @app.exception_handler(HTTPException)
-    async def http_exception_handler(request: Request, exc: HTTPException):
+    async def http_exception_handler(request: Request, exc: HTTPException) -> JSONResponse:
         resp = {
             "code": exc.status_code,
             "msg": exc.detail

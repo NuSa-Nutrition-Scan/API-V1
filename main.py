@@ -16,5 +16,5 @@ app.include_router(auth_routes())
 
 
 @app.get("/")
-async def index():
+async def index() -> JSONResponse:
     return JSONResponse(status_code=200, content={"code": 200, "msg": "OK"})
