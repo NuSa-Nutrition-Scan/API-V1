@@ -14,7 +14,7 @@ http_customize_handler(app)
 
 app.include_router(auth_routes())
 
+
 @app.get("/")
 async def index():
-    return JSONResponse(status_code=200, content={ "code": 200, "msg": "OK" })
-
+    return JSONResponse(status_code=200, content={"code": 200, "msg": "OK"})

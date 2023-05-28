@@ -10,6 +10,7 @@ from typing import Any
 
 env = dotenv_values(".env")
 
+
 class AuthService:
     def __init__(self):
         self.app = firebase_admin.get_app()
@@ -70,7 +71,7 @@ class AuthService:
             msg = self._get_error_msg_by_firebase_err(txt)
 
             return result.Err(code, msg)
-        
+
         except Exception as e:
             print(e)
             return result.InternalErr()
@@ -82,7 +83,7 @@ class AuthService:
 
         except ValueError:
             return result.Err(400, "Bad credentials")
-        
+
         except Exception as e:
             print(e)
             return result.InternalErr()

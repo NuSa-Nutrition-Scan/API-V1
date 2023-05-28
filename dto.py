@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 
+
 class AuthBody(BaseModel):
     name: str = Field(max_length=50)
     email: str = Field(max_length=100)
@@ -8,6 +9,7 @@ class AuthBody(BaseModel):
 
 class RefreshTokenBody(BaseModel):
     refresh_token: str
+
 
 class GetUserInfoBody(BaseModel):
     id_token: str

@@ -29,7 +29,7 @@ def validation_body_exception_handler(app: FastAPI) -> callable:
 
         except ValueError:
             return JSONResponse(status_code=401, content={"code": 401, "msg": "Invalid credentials"})
-    
+
         except Exception as e:
             print(e)
             return JSONResponse(status_code=500, content={"code": 500, "msg": "Internal error"})

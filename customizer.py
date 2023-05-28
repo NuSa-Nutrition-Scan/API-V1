@@ -3,10 +3,11 @@ from fastapi.exceptions import RequestValidationError, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
 
+
 def validation_body_exception_handler(app: FastAPI) -> callable:
     @app.exception_handler(RequestValidationError)
     async def validation_exception_handler(request: Request, exc: RequestValidationError):
-        try:    
+        try:
             raw_err = exc.raw_errors
             error_wrapper = raw_err[0]
             validation_error = error_wrapper.exc
@@ -22,17 +23,17 @@ def validation_body_exception_handler(app: FastAPI) -> callable:
             for e in overwritten_errors:
                 resp["errors"][e['loc'][0]] = e['msg']
 
-            return JSONResponse(status_code=422, content=jsonable_encoder(resp))        
+            return JSONResponse(status_code=422, content=jsonable_encoder(resp))
         except AttributeError:
             resp = {
                 "code": 422,
                 "msg": "Please fill all the field",
             }
 
-            return JSONResponse(status_code=422, content=jsonable_encoder(resp))        
+            return JSONResponse(status_code=422, content=jsonable_encoder(resp))
 
-    
     return validation_exception_handler
+
 
 def http_customize_handler(app: FastAPI) -> callable:
     @app.exception_handler(HTTPException)
@@ -43,5 +44,5 @@ def http_customize_handler(app: FastAPI) -> callable:
         }
 
         return JSONResponse(status_code=exc.status_code, content=jsonable_encoder(resp))
-    
+
     return http_exception_handler
