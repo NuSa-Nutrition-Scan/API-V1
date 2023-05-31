@@ -5,9 +5,8 @@ from service.authentication import AuthService
 from .security import extract_token, User
 
 
-def routes() -> APIRouter:
+def routes(service: AuthService) -> APIRouter:
     router = APIRouter(prefix='/auth')
-    service = AuthService()
 
     @router.post("/signup")
     async def signup(body: SignUpDTO) -> JSONResponse:

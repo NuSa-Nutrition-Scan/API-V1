@@ -1,20 +1,16 @@
-import firebase_admin
 import json
 import requests
 from . import result
 from firebase_admin import auth
 from firebase_admin._auth_utils import EmailAlreadyExistsError
 from firebase_admin.exceptions import FirebaseError
-from dotenv import dotenv_values
 from typing import Any
-
-env = dotenv_values(".env")
 
 
 class AuthService:
-    def __init__(self):
-        self.app = firebase_admin.get_app()
-        self.api_key = env["API_KEY"]
+    def __init__(self, app: Any, api_key: str):
+        self.app = app
+        self.api_key = api_key
 
     def create_user(self, name: str, email: str, password: str) -> result.Result:
         try:

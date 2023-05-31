@@ -3,3 +3,4 @@ __pycache__/
 serviceAccountKey.json
 .env
 example_result.txt
+service_gcp.json

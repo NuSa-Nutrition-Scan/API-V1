@@ -1,7 +1,10 @@
+from collections import defaultdict
+
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.encoders import jsonable_encoder
+from pydantic.error_wrappers import ErrorWrapper
 
 
 def validation_body_exception_handler(app: FastAPI) -> callable:
@@ -24,7 +27,27 @@ def validation_body_exception_handler(app: FastAPI) -> callable:
                 resp["errors"][e['loc'][0]] = e['msg']
 
             return JSONResponse(status_code=422, content=jsonable_encoder(resp))
-        except AttributeError:
+        except AttributeError as e:
+            rearranged_errors = defaultdict(list)
+            for pydantic_error in exc.errors():
+                loc, msg = pydantic_error["loc"], pydantic_error["msg"]
+                filtered_loc = loc[1:] if loc[0] in ("body", "query", "path") else loc
+                field_string = ".".join(filtered_loc) # nested fields with dot-notation
+                rearranged_errors[field_string].append(msg)
+
+            resp = {
+                "code": 422,
+                "msg": "Unprocessable Entity",
+                "errors": {}
+            }
+
+            for k, v in rearranged_errors.items():
+                resp["errors"][k] = v[0]
+
+            return JSONResponse(status_code=422, content=jsonable_encoder(resp))
+        except Exception as e:
+            print(e)
+
             resp = {
                 "code": 422,
                 "msg": "Please fill all the field",
