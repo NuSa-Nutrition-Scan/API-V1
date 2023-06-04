@@ -13,6 +13,8 @@ license_info = {
 }
 
 description = """
+# [WATCH THIS FIRST!](https://www.youtube.com/watch?v=xvFZjo5PgG0)
+
 NuSa API helps you, our solo mobile developers (LOL), to run your app. 🚀
 
 ## Features
