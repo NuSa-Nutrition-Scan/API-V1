@@ -21,7 +21,10 @@ class SettingsService:
         uploaded_photo_url = ''
 
         if file is not None:
+            print(user.photo_url, user.photo_url != DEFAULT_PHOTO_URL)
+
             if user.photo_url != DEFAULT_PHOTO_URL:
+                print("masuk sini ngab")
                 photo_id = user.photo_url.split('/')[-1]
                 path = f"{user.user_id}/profile"
 
@@ -29,6 +32,7 @@ class SettingsService:
                 uploaded_photo_url = self.storage.store(
                     path=path, file=file, content_type=content_type)
             else:
+                print("jagngan masuk sini")
                 path = f"{user.user_id}/profile"
                 uploaded_photo_url = self.storage.store(
                     path=path, file=file, content_type=content_type)
@@ -59,6 +63,7 @@ class SettingsService:
 
             return result.InternalErr()
 
+        # self.auth_service.revoke_token(user.user_id)
         token = self.auth_service.refresh_token(refresh_token=refresh_token)
 
         resp = {
