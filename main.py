@@ -26,7 +26,8 @@ app = FastAPI(
     version=metadata.version,
     contact=metadata.contact,
     license_info=metadata.license_info,
-    openapi_tags=metadata.tags_metadata
+    openapi_tags=metadata.tags_metadata,
+    debug=True
 )
 
 validation_body_exception_handler(app)

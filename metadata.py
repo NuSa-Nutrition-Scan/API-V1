@@ -3,7 +3,7 @@ title = "NuSa API"
 version = "1.0.0"
 
 contact = {
-    "name": "Samuel",
+    "name": "NuSa CC Team",
     "email": "samuelhotang02@gmail.com",
 }
 
