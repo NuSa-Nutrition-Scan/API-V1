@@ -6,6 +6,7 @@ from firebase_admin._auth_utils import EmailAlreadyExistsError
 from firebase_admin.exceptions import FirebaseError
 from typing import Any
 
+DEFAULT_PHOTO_URL = "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg"
 
 class AuthService:
     def __init__(self, app: Any, api_key: str):
@@ -19,7 +20,8 @@ class AuthService:
                 display_name=name,
                 email=email,
                 email_verified=True,
-                password=password
+                password=password,
+                photo_url=DEFAULT_PHOTO_URL
             )
 
             return result.Created()
@@ -35,7 +37,7 @@ class AuthService:
             return result.Err(400, str(e))
 
         except Exception as e:
-            print(e)
+            print('AuthService.create_user:', e)
             return result.InternalErr()
 
     def authenticate_user(self, email: str, password: str) -> result.Result:
@@ -69,7 +71,7 @@ class AuthService:
             return result.Err(code, msg)
 
         except Exception as e:
-            print(e)
+            print('AuthService.authenticate_user:', e)
             return result.InternalErr()
 
     def revoke_token(self, id_user: str) -> result.Result:
@@ -81,7 +83,7 @@ class AuthService:
             return result.Err(400, "Bad credentials")
 
         except Exception as e:
-            print(e)
+            print('AuthService.revoke_token:', e)
             return result.InternalErr()
         
     def refresh_token(self, refresh_token: str) -> result.Result:
@@ -113,7 +115,7 @@ class AuthService:
             return result.Err(code, msg)
 
         except Exception as e:
-            print(e)
+            print('AuthService.refresh_token:', e)
             return result.InternalErr()
 
     def _extract_response_text(self, data: Any, key: str) -> str:

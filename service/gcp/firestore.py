@@ -74,5 +74,4 @@ class Firestore:
         utc_now = datetime.datetime.now(pytz.utc)
         gmt7 = pytz.timezone('Etc/GMT+7')
         gmt7_now = utc_now.astimezone(gmt7)
-        print(gmt7_now)
         return gmt7_now

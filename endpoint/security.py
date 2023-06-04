@@ -8,10 +8,12 @@ security = HTTPBearer()
 
 
 class User:
-    def __init__(self, id_user: str, name: str, email: str):
+    def __init__(self, id_user: str, name: str, email: str, photo_url: str, auth_token: str):
         self.user_id = id_user
         self.name = name
         self.email = email
+        self.photo_url = photo_url
+        self.auth_token = auth_token
 
 
 def extract_token(token: HTTPAuthorizationCredentials = Depends(security)) -> User:
@@ -23,7 +25,7 @@ def extract_token(token: HTTPAuthorizationCredentials = Depends(security)) -> Us
     try:
         credentials = auth.verify_id_token(id_token)
         user = User(id_user=credentials["user_id"],
-                    name=credentials["name"], email=credentials["email"])
+                    name=credentials["name"], email=credentials["email"], photo_url=credentials["picture"], auth_token=id_token)
         return user
 
     except ExpiredIdTokenError:
@@ -36,5 +38,5 @@ def extract_token(token: HTTPAuthorizationCredentials = Depends(security)) -> Us
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     except Exception as e:
-        print(e)
+        print('Extract Token:', e)
         raise HTTPException(status_code=500, detail="Internal error")
