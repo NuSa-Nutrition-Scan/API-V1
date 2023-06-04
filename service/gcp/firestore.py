@@ -68,7 +68,6 @@ class Firestore:
         for result in results:
             r = result.to_dict()
 
-            print(r['created_at'])
             doc = {
                 'nutrition_id': result.id,
                 'img_url': r['img_url'],

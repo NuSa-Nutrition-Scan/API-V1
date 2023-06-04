@@ -11,4 +11,9 @@ def routes(service: NutritionService) -> APIRouter:
         result = service.upload_nutrition_photo(file=file.file, user_id=user.user_id, content_type=file.content_type)
         return JSONResponse(status_code=result["code"], content=result)
 
+    @router.get('/photo/count')
+    async def count_upload_photo(user: User = Depends(extract_token)) -> JSONResponse:
+        result = service.get_count_photo_today(user_id=user.user_id)
+        return JSONResponse(status_code=result["code"], content=result)
+
     return router

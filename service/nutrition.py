@@ -25,6 +25,9 @@ class NutritionService:
 
         return result.OK(data=saved_result)
 
-    def get_all_nutrition_photo(self, user_id: str, page: int = 0):
-        paginated_photos = self.db.get_all_user_nutrition_photo(user_id=user_id, skip=page)
-        return result.OK(data=paginated_photos)
+    def get_count_photo_today(self, user_id: str):
+        count = self.db.get_count_nutrition_input_today(user_id=user_id)
+
+        resp = {"count": count}
+
+        return result.OK(data=resp)
