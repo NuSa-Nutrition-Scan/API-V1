@@ -28,4 +28,6 @@ def routes(service: AuthService) -> APIRouter:
         result = service.refresh_token(body.refresh_token)
         return JSONResponse(status_code=result["code"], content=result)
 
+    
+
     return router

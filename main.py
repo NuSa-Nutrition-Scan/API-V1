@@ -6,12 +6,13 @@ from endpoint.nutrition import routes as nutrition_routes
 from service.authentication import AuthService
 from service.nutrition import NutritionService
 from config import Config
+from service.gcp.storage import Storage 
 
 config = Config()
 
 # service
 auth_service = AuthService(app=config.firebase_app, api_key=config.api_key)
-nutrition_service = NutritionService(app=config.firebase_app, storage=config.gcs_app)
+nutrition_service = NutritionService(app=config.firebase_app, storage=config.storage, db=config.firestore_app)
 
 # router
 app = FastAPI()
