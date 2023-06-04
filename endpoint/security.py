@@ -4,7 +4,7 @@ from firebase_admin._token_gen import ExpiredIdTokenError
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-security = HTTPBearer()
+security = HTTPBearer(description="Bearer token")
 
 
 class User:
