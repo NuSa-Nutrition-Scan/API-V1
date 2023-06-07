@@ -32,10 +32,32 @@ jobs:
 
     - name: Add app.yaml
       env:
-        APP_YAML_FILE: ${{ vars.DEV_APP_YAML }}
+        API_KEY: ${{ secrets.DEV_API_KEY }}
+        BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+        PROJECT_ID: ${{ secrets.PROJECT_ID }}
       run: |
-        echo $APP_YAML_FILE
-        echo $APP_YAML_FILE > app.yaml
+        echo "
+        runtime: python310
+        entrypoint: gunicorn --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind :$PORT main:app
+        service: nusa-api
+
+        env_variables:
+          API_KEY: $API_KEY
+          PROJECT_ID: $PROJECT_ID
+          BUCKET_NAME: $BUCKET_NAME
+        "
+
+        echo "
+        runtime: python310
+        entrypoint: gunicorn --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind :$PORT main:app
+        service: nusa-api
+
+        env_variables:
+          API_KEY: $API_KEY
+          PROJECT_ID: $PROJECT_ID
+          BUCKET_NAME: $BUCKET_NAME
+        " > app.yaml
+        
         cat app.yaml
 
     - name: GCP Auth
