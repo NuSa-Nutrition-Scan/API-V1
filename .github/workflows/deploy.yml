@@ -30,13 +30,29 @@ jobs:
         echo $GCP_FILES > service_gcp.json
         cat service_gcp.json
 
+    - name: Add app.yaml
+      env:
+        APP_YAML_FILE: ${{ vars.DEV_APP_YAML }}
+      run: |
+        echo $APP_YAML_FILE
+        echo $APP_YAML_FILE > app.yaml
+        cat app.yaml
+
     - name: GCP Auth
       uses: 'google-github-actions/auth@v1'
       with:
         credentials_json: '${{ secrets.DEV_GCP_CREDENTIALS }}'
 
-    - name: 'Set up Cloud SDK'
+    - name: Set up Cloud SDK
       uses: 'google-github-actions/setup-gcloud@v1'
 
-    - name: 'Use gcloud CLI'
+    - name: Use gcloud CLI
       run: 'gcloud info'
+
+    - name: Deploy to GAE
+      uses: 'google-github-actions/deploy-appengine@v1'
+      with:
+        deliverables: app.yaml
+
+    - name: Test Endpoint
+      run: 'curl "${{ steps.deploy.outputs.url }}"'

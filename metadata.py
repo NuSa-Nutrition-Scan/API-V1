@@ -1,6 +1,6 @@
 title = "NuSa API"
 
-version = "1.0.0"
+version = "0.5.0"
 
 contact = {
     "name": "NuSa CC Team",
