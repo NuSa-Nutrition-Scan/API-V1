@@ -5,13 +5,18 @@ on:
     branches:
       - main
 
-job:
+jobs:
   job_id:
+    runs-on: ubuntu-latest
+
     permissions:
       contents: 'read'
       id-token: 'write'
   
     steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
     - id: 'auth'
       uses: 'google-github-actions/auth@v1'
       with:
