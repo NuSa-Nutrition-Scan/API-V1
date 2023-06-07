@@ -14,7 +14,15 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - id: 'auth'
+    - name: Add Firebase Service Account 
+      run: |
+        echo "${{ secrets.DEV_FIREBASE_SA }}" > serviceAccountKey.json
+
+    - name: Add GCP Service Account
+      run: |
+        echo "${{ secrets.DEV_GCP_CREDENTIALS }}" > service_gcp.json
+
+    - name: GCP Auth
       uses: 'google-github-actions/auth@v1'
       with:
         credentials_json: '${{ secrets.DEV_GCP_CREDENTIALS }}'
@@ -24,3 +32,6 @@ jobs:
 
     - name: 'Use gcloud CLI'
       run: 'gcloud info'
+
+    - name: See Cred
+      uses: cat serviceAccountKey.json
