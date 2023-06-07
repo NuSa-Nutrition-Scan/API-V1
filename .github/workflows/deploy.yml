@@ -3,15 +3,12 @@ name: Deploy to Google App Engine
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
-  job_id:
+  deploy:
+    name: Deploying...
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: 'read'
-      id-token: 'write'
   
     steps:
     - name: Checkout
