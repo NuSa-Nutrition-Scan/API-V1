@@ -20,7 +20,7 @@ jobs:
     # - name: Add GCP Service Account
     #   run: echo "${{ secrets.DEV_GCP_CREDENTIALS }}" > service_gcp.json
 
-    - id: 'GCP_Auth'
+    - name: GCP Auth
       uses: 'google-github-actions/auth@v1'
       with:
         credentials_json: '${{ secrets.DEV_GCP_CREDENTIALS }}'
