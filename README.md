@@ -5,6 +5,7 @@ NuSa API v1 provides the backend API for our application, enabling seamless comm
 ## Features
 
 ### Authentication section
+- **Register:** Register an user.
 - **Login**: Authenticate users and generate access tokens.
 - **Logout**: Invalidate access tokens and log out users.
 - **Refresh**: Refresh expired access tokens.
