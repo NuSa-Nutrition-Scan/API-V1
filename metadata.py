@@ -65,7 +65,7 @@ You will be able to:
         }
     }
     ```
-    the data field always will be dynamic key and value pair
+    the data field always will be dynamic key and value pair (maybe list of key value pair too)
 
     Other example
     ```

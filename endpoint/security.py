@@ -1,3 +1,4 @@
+import json
 from firebase_admin import auth
 from firebase_admin._auth_utils import InvalidIdTokenError
 from firebase_admin._token_gen import ExpiredIdTokenError
