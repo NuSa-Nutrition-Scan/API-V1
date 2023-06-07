@@ -17,3 +17,12 @@
 __pycache__/
 # Ignored by the build system
 /setup.cfg
+
+# Unused files:
+app.example.yaml
+.env.example
+.env
+example_result.txt
+INSTALL.md
+LICENSE
+README.md
