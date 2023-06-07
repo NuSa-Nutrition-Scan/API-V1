@@ -16,7 +16,7 @@ jobs:
 
     - name: Add Firebase Service Account 
       env:
-        FIREBASE_FILES: "$(( ${{ github.ref }} == 'refs/heads/main' ? {{ vars.PROD_FIREBASE_SA }} : {{ vars.DEV_FIREBASE_SA }} ))"
+        FIREBASE_FILES: $(( ${{ github.ref }} == 'refs/heads/main' ? {{ vars.PROD_FIREBASE_SA }} : {{ vars.DEV_FIREBASE_SA }} ))
       run: |
         echo $FIREBASE_FILES
         echo $FIREBASE_FILES > serviceAccountKey.json
@@ -24,7 +24,7 @@ jobs:
 
     - name: Add GCP Service Account
       env:
-        GCP_FILES: "$(( ${{ github.ref }} == 'refs/heads/main' ? {{ vars.PROD_GCP_CREDENTIALS }} : ${{ vars.DEV_GCP_CREDENTIALS }} ))"
+        GCP_FILES: $(( ${{ github.ref }} == 'refs/heads/main' ? {{ vars.PROD_GCP_CREDENTIALS }} : ${{ vars.DEV_GCP_CREDENTIALS }} ))
       run: |
         echo $GCP_FILES
         echo $GCP_FILES > service_gcp.json
