@@ -1,0 +1,24 @@
+name: Deploy to Google App Engine
+
+on:
+  push:
+    branches:
+      - main
+
+job:
+  job_id:
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+  
+    steps:
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.DEV_GCP_CREDENTIALS }}'
+
+    - name: 'Set up Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v1'
+
+    - name: 'Use gcloud CLI'
+      run: 'gcloud info'
