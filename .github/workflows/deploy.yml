@@ -16,7 +16,7 @@ jobs:
 
     - name: Add Firebase Service Account 
       env:
-        FIREBASE_FILES: $(( ${{ github.ref }} == 'refs/heads/main' ? {{ vars.PROD_FIREBASE_SA }} : {{ vars.DEV_FIREBASE_SA }} ))
+        FIREBASE_FILES: "$(( ${{ github.ref }} == 'refs/heads/main' && {{ vars.PROD_FIREBASE_SA }} || {{ vars.DEV_FIREBASE_SA }} ))"
       run: |
         echo $FIREBASE_FILES
         echo $FIREBASE_FILES > serviceAccountKey.json
@@ -24,7 +24,7 @@ jobs:
 
     - name: Add GCP Service Account
       env:
-        GCP_FILES: $(( ${{ github.ref }} == 'refs/heads/main' ? {{ vars.PROD_GCP_CREDENTIALS }} : ${{ vars.DEV_GCP_CREDENTIALS }} ))
+        GCP_FILES: "$(( ${{ github.ref }} == 'refs/heads/main' && {{ vars.PROD_GCP_CREDENTIALS }} || ${{ vars.DEV_GCP_CREDENTIALS }} ))"
       run: |
         echo $GCP_FILES
         echo $GCP_FILES > service_gcp.json
@@ -32,9 +32,9 @@ jobs:
 
     - name: Add app.yaml
       env:
-        API_KEY: "$(( ${{ github.ref }} == 'refs/heads/main' ? ${{ secrets.PROD_API_KEY }} : ${{ secrets.DEV_API_KEY }} ))"
-        BUCKET_NAME: "$(( ${{ github.ref }} == 'refs/heads/main' ? ${{ secrets.PROD_BUCKET_NAME }} : ${{ secrets.DEV_BUCKET_NAME }} ))"
-        PROJECT_ID: "$(( ${{ github.ref }} == 'refs/heads/main' ? ${{ secrets.PROD_PROJECT_ID }} : ${{ secrets.DEV_PROJECT_ID }} ))"
+        API_KEY: "$(( ${{ github.ref }} == 'refs/heads/main' && ${{ secrets.PROD_API_KEY }} || ${{ secrets.DEV_API_KEY }} ))"
+        BUCKET_NAME: "$(( ${{ github.ref }} == 'refs/heads/main' && ${{ secrets.PROD_BUCKET_NAME }} || ${{ secrets.DEV_BUCKET_NAME }} ))"
+        PROJECT_ID: "$(( ${{ github.ref }} == 'refs/heads/main' && ${{ secrets.PROD_PROJECT_ID }} || ${{ secrets.DEV_PROJECT_ID }} ))"
       run: |
         cp app.example.yaml app.yaml
         sed -i "s/your-api-key/$API_KEY/g" app.yaml
@@ -45,7 +45,7 @@ jobs:
     - name: GCP Auth
       uses: 'google-github-actions/auth@v1'
       with:
-        credentials_json: "$(( ${{ github.ref }} == 'refs/heads/main' ? {{ secrets.PROD_GCP_CREDENTIALS }} : ${{ secrets.DEV_GCP_CREDENTIALS }} ))"
+        credentials_json: "$(( ${{ github.ref }} == 'refs/heads/main' && {{ secrets.PROD_GCP_CREDENTIALS }} || ${{ secrets.DEV_GCP_CREDENTIALS }} ))"
 
     - name: Set up Cloud SDK
       uses: 'google-github-actions/setup-gcloud@v1'
