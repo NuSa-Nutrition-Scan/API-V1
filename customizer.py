@@ -1,5 +1,4 @@
 from collections import defaultdict
-
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError, HTTPException
 from fastapi.responses import JSONResponse
@@ -42,6 +41,14 @@ def validation_body_exception_handler(app: FastAPI) -> callable:
             }
 
             for k, v in rearranged_errors.items():
+                if k == "" or v == "":
+                    resp = {
+                        "code": 422,
+                        "msg": "Please fill all the field",
+                    }
+
+                    return JSONResponse(status_code=422, content=jsonable_encoder(resp))
+
                 resp["errors"][k] = v[0]
 
             return JSONResponse(status_code=422, content=jsonable_encoder(resp))
@@ -69,3 +76,5 @@ def http_customize_handler(app: FastAPI) -> callable:
         return JSONResponse(status_code=exc.status_code, content=jsonable_encoder(resp))
 
     return http_exception_handler
+
+        

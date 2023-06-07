@@ -25,6 +25,55 @@ You will be able to:
 * **Get user profile & update it**
 * **Upload photo with limit 10 every day**
 * **Integrate with machine learning**  (_not implemented_).
+
+#### NOTES FOR RESPONSE
+
+1. Every 422 error response will be like this:
+    ```
+    {
+        "code": 422,
+        "msg": "Unprocessable Entity",
+        "errors": {
+            "name": "field required",
+            "password": "field required"
+        }
+    }
+    ```
+    errors field will be dynamic key value pair
+
+    
+2. Other than 422, every error response will be like this:
+    ```
+    {
+        "code": 401,
+        "msg": "Unauthorized"
+    }
+    ```
+    errors field will always code and msg
+
+    
+3. Every 200 success response will be like this:
+    ```
+    {
+        "code": 200,
+        "msg": "OK",
+        "data": {
+            "some": "dynamic data",
+            "some": "dynamic data",
+            "some": "dynamic data",
+            "some": "dynamic data"
+        }
+    }
+    ```
+    the data field always will be dynamic key and value pair
+
+    Other example
+    ```
+    {
+        "code": 201,
+        "msg": "Created"
+    }
+    ```
 """
 
 tags_metadata = [

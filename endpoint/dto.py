@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-
+from typing import Optional
 
 class SignUpDTO(BaseModel):
     name: str = Field(min_length=1, max_length=50)
@@ -49,3 +49,15 @@ class GetUserInfoBody(BaseModel):
                 "id_token": "ceritanya-token-buat-pier-si-paling-solo-md",
             }
         }
+
+class BaseResponse(BaseModel):
+    code: int
+    msg: str
+    data: Optional[dict]
+
+signup_response = {
+    200: {
+        "code": 201,
+        "msg": "Created"
+    }
+}
