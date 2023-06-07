@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploying...
+    name: Deploying Dev...
     runs-on: ubuntu-latest
   
     steps:
@@ -16,7 +16,7 @@ jobs:
 
     - name: Add Firebase Service Account 
       env:
-        FIREBASE_FILES: ${{ vars.DEV_FIREBASE_SA }}
+        FIREBASE_FILES: ${{ secrets.DEV_FIREBASE_SA }}
       run: |
         echo $FIREBASE_FILES
         echo $FIREBASE_FILES > serviceAccountKey.json
@@ -24,7 +24,7 @@ jobs:
 
     - name: Add GCP Service Account
       env:
-        GCP_FILES: ${{ vars.DEV_GCP_CREDENTIALS }}
+        GCP_FILES: ${{ secrets.DEV_GCP_CREDENTIALS }}
       run: |
         echo $GCP_FILES
         echo $GCP_FILES > service_gcp.json
