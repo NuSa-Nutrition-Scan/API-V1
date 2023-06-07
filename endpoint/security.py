@@ -1,14 +1,18 @@
-import json
+from fastapi import Depends, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from firebase_admin import auth
 from firebase_admin._auth_utils import InvalidIdTokenError
 from firebase_admin._token_gen import ExpiredIdTokenError
-from fastapi import Depends, HTTPException
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
-security = HTTPBearer(description="Bearer token", scheme_name="Place your bearer token here")
+security = HTTPBearer(
+    description="Bearer token", scheme_name="Place your bearer token here"
+)
+
 
 class User:
-    def __init__(self, id_user: str, name: str, email: str, photo_url: str, auth_token: str):
+    def __init__(
+        self, id_user: str, name: str, email: str, photo_url: str, auth_token: str
+    ):
         self.user_id = id_user
         self.name = name
         self.email = email
@@ -24,8 +28,13 @@ def extract_token(token: HTTPAuthorizationCredentials = Depends(security)) -> Us
 
     try:
         credentials = auth.verify_id_token(id_token)
-        user = User(id_user=credentials["user_id"],
-                    name=credentials["name"], email=credentials["email"], photo_url=credentials["picture"], auth_token=id_token)
+        user = User(
+            id_user=credentials["user_id"],
+            name=credentials["name"],
+            email=credentials["email"],
+            photo_url=credentials["picture"],
+            auth_token=id_token,
+        )
         return user
 
     except ExpiredIdTokenError:
@@ -38,5 +47,5 @@ def extract_token(token: HTTPAuthorizationCredentials = Depends(security)) -> Us
         raise HTTPException(status_code=401, detail="Invalid credentials")
 
     except Exception as e:
-        print('Extract Token:', e)
+        print("Extract Token:", e)
         raise HTTPException(status_code=500, detail="Internal error")

@@ -1,23 +1,30 @@
-import metadata
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
-from customizer import validation_body_exception_handler, http_customize_handler
+
+import metadata
+from config import Config
+from customizer import (http_customize_handler, validation_body_exception_handler)
 from endpoint.auth import routes as auth_routes
 from endpoint.nutrition import routes as nutrition_routes
 from endpoint.settings import routes as settings_routes
 from service.authentication import AuthService
 from service.nutrition import NutritionService
 from service.settings import SettingsService
-from config import Config
 
 config = Config()
 
 # service
 auth_service = AuthService(app=config.firebase_app, api_key=config.api_key)
 nutrition_service = NutritionService(
-    app=config.firebase_app, storage=config.storage, db=config.firestore_app)
-settings_service = SettingsService(app=config.firebase_app, storage=config.storage,
-                                   db=config.firestore_app, api_key=config.api_key, auth_service=auth_service)
+    app=config.firebase_app, storage=config.storage, db=config.firestore_app
+)
+settings_service = SettingsService(
+    app=config.firebase_app,
+    storage=config.storage,
+    db=config.firestore_app,
+    api_key=config.api_key,
+    auth_service=auth_service,
+)
 
 # router
 app = FastAPI(
@@ -27,7 +34,7 @@ app = FastAPI(
     contact=metadata.contact,
     license_info=metadata.license_info,
     openapi_tags=metadata.tags_metadata,
-    debug=True
+    debug=True,
 )
 
 validation_body_exception_handler(app)

@@ -1,64 +1,76 @@
-import requests
 import json
-from firebase_admin import auth
-from .gcp.storage import Storage
-from .gcp.firestore import Firestore
 from typing import Any, BinaryIO, Optional
+
+from firebase_admin import auth
+
 from . import result
 from .authentication import AuthService
+from .gcp.firestore import Firestore
+from .gcp.storage import Storage
 
 DEFAULT_PHOTO_URL = "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg"
 
+
 class SettingsService:
-    def __init__(self, app: Any, storage: Storage, db: Firestore, api_key: str, auth_service: AuthService):
+    def __init__(
+        self,
+        app: Any,
+        storage: Storage,
+        db: Firestore,
+        api_key: str,
+        auth_service: AuthService,
+    ):
         self.storage = storage
         self.app = app
         self.db = db
         self.api_key = api_key
         self.auth_service = auth_service
 
-    def update_profile(self, name: str, file: Optional[BinaryIO], content_type: str, user: Any, refresh_token: str):
-        uploaded_photo_url = ''
+    def update_profile(
+        self,
+        name: str,
+        file: Optional[BinaryIO],
+        content_type: str,
+        user: Any,
+        refresh_token: str,
+    ):
+        uploaded_photo_url = ""
 
         if file is not None:
-            print(user.photo_url, user.photo_url != DEFAULT_PHOTO_URL)
-
             if user.photo_url != DEFAULT_PHOTO_URL:
-                print("masuk sini ngab")
-                photo_id = user.photo_url.split('/')[-1]
+                photo_id = user.photo_url.split("/")[-1]
                 path = f"{user.user_id}/profile"
 
                 self.storage.destruct(path=path, photo_id=photo_id)
                 uploaded_photo_url = self.storage.store(
-                    path=path, file=file, content_type=content_type)
+                    path=path, file=file, content_type=content_type
+                )
             else:
-                print("jagngan masuk sini")
                 path = f"{user.user_id}/profile"
                 uploaded_photo_url = self.storage.store(
-                    path=path, file=file, content_type=content_type)
+                    path=path, file=file, content_type=content_type
+                )
 
         try:
-            if uploaded_photo_url == '':    
+            if uploaded_photo_url == "":
                 auth.update_user(
                     uid=user.user_id,
                     display_name=name,
                 )
-            
+
             else:
                 auth.update_user(
-                    uid=user.user_id,
-                    display_name=name,
-                    photo_url=uploaded_photo_url
+                    uid=user.user_id, display_name=name, photo_url=uploaded_photo_url
                 )
         except ValueError:
-            if uploaded_photo_url != '':
+            if uploaded_photo_url != "":
                 self.storage.destruct(path=path, photo_id=photo_id)
 
             return result.Err(code=400, msg="Invalid user")
-        
+
         except Exception as e:
-            print('SettingsService.update_profile:', e)
-            if uploaded_photo_url != '':
+            print("SettingsService.update_profile:", e)
+            if uploaded_photo_url != "":
                 self.storage.destruct(path=path, photo_id=photo_id)
 
             return result.InternalErr()
@@ -80,7 +92,8 @@ class SettingsService:
 
     def get_upload_nutrition_photo_history(self, user_id: str, page: int = 0):
         paginated_photos = self.db.get_all_user_nutrition_photo(
-            user_id=user_id, skip=page)
+            user_id=user_id, skip=page
+        )
         return result.OK(data=paginated_photos)
 
     def _extract_response_text(self, data: Any, key: str) -> str:
@@ -94,5 +107,5 @@ class SettingsService:
         if "TOKEN_EXPIRED" in msg:
             return "Session has expired. Please sign in again"
 
-        print('service.settings._get_error_msg_by_firebase_err: ', msg)
+        print("service.settings._get_error_msg_by_firebase_err: ", msg)
         return "Bad credentials"

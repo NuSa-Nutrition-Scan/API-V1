@@ -9,16 +9,9 @@ class Result:
 
     def build(self) -> Dict:
         if self.data is None:
-            return {
-                "code": self.code,
-                "msg": self.msg
-            }
+            return {"code": self.code, "msg": self.msg}
 
-        return {
-            "code": self.code,
-            "msg": self.msg,
-            "data": self.data
-        }
+        return {"code": self.code, "msg": self.msg, "data": self.data}
 
 
 def OK(data: Any = None):

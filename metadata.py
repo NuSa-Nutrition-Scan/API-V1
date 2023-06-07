@@ -87,6 +87,6 @@ tags_metadata = [
     },
     {
         "name": "Settings",
-        "description": "Update profile, and see all the previous uploaded photo"
-    }
+        "description": "Update profile, and see all the previous uploaded photo",
+    },
 ]

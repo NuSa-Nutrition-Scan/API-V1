@@ -1,5 +1,7 @@
-from pydantic import BaseModel, Field
 from typing import Optional
+
+from pydantic import BaseModel, Field
+
 
 class SignUpDTO(BaseModel):
     name: str = Field(min_length=1, max_length=50)
@@ -11,7 +13,7 @@ class SignUpDTO(BaseModel):
             "example": {
                 "name": "Aku butuh ini",
                 "email": "akubutuhini@gmail.com",
-                "password": "akubutuhini"
+                "password": "akubutuhini",
             }
         }
 
@@ -22,10 +24,7 @@ class SignInDTO(BaseModel):
 
     class Config:
         schema_extra = {
-            "example": {
-                "email": "akubutuhini@gmail.com",
-                "password": "akubutuhini"
-            }
+            "example": {"email": "akubutuhini@gmail.com", "password": "akubutuhini"}
         }
 
 
@@ -50,14 +49,11 @@ class GetUserInfoBody(BaseModel):
             }
         }
 
+
 class BaseResponse(BaseModel):
     code: int
     msg: str
     data: Optional[dict]
 
-signup_response = {
-    200: {
-        "code": 201,
-        "msg": "Created"
-    }
-}
+
+signup_response = {200: {"code": 201, "msg": "Created"}}

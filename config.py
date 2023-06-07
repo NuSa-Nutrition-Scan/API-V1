@@ -1,12 +1,14 @@
 import os
+
 import firebase_admin
 from dotenv import dotenv_values
-from firebase_admin import credentials
-from firebase_admin import firestore
+from firebase_admin import credentials, firestore
 from google.cloud import storage
 from google.oauth2 import service_account
-from service.gcp.storage import Storage
+
 from service.gcp.firestore import Firestore
+from service.gcp.storage import Storage
+
 
 class Config:
     def __init__(self):
@@ -82,9 +84,9 @@ def get_bucket_name():
 
 def get_gcs(project_id: str) -> storage.Client:
     storage_credentials = service_account.Credentials.from_service_account_file(
-        "service_gcp.json")
-    client = storage.Client(
-        project=project_id, credentials=storage_credentials)
+        "service_gcp.json"
+    )
+    client = storage.Client(project=project_id, credentials=storage_credentials)
     return client
 
 
