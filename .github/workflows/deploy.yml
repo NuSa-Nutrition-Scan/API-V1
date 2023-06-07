@@ -54,6 +54,7 @@ jobs:
       run: 'gcloud info'
 
     - name: Deploy to GAE
+      id: deploy
       uses: 'google-github-actions/deploy-appengine@v1'
       with:
         deliverables: app.yaml

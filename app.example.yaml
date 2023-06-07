@@ -1,6 +1,6 @@
 runtime: python310
 entrypoint: gunicorn --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind :$PORT main:app
-service: nusa-api
+service: nusa-api-staging
 
 env_variables:
   API_KEY: your-api-key
