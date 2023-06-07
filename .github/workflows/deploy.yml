@@ -14,8 +14,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # - name: Add Firebase Service Account 
-    #   run: echo "${{ secrets.DEV_FIREBASE_SA }}" > serviceAccountKey.json
+    - name: Add Firebase Service Account 
+      run: echo "${{ secrets.DEV_FIREBASE_SA }}" > serviceAccountKey.json
 
     # - name: Add GCP Service Account
     #   run: echo "${{ secrets.DEV_GCP_CREDENTIALS }}" > service_gcp.json
