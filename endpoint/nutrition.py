@@ -13,6 +13,19 @@ def routes(service: NutritionService) -> APIRouter:
             Example: your food, your beverages, your ex (ಥ _ ಥ). \n
             **NOTE:** Requires a Bearer Token. \n
             **NOTE #2:** Make sure you send the request in multipart/form-data, not application/json
+
+            Response: 200
+            ```
+            {
+                "code": 200,
+                "msg": "OK",
+                "data": {
+                    "user_id": "lrGpw03KXZTy7ZW9Um2OO1Bxxr72",
+                    "img_url": "https://storage.googleapis.com/nusa-bucket/lrGpw03KXZTy7ZW9Um2OO1Bxxr72/nutrition/QRe65L5QFTc8mafSGmPJeb",
+                    "created_at": "2023-06-07 19:15:31"
+                }
+            }
+            ```
         """
         result = service.upload_nutrition_photo(file=file.file, user_id=user.user_id, content_type=file.content_type)
         return JSONResponse(status_code=result["code"], content=result)
@@ -23,6 +36,17 @@ def routes(service: NutritionService) -> APIRouter:
             Every day, a user can only upload photo 10 times a day. \n
             Hit this api, so user can know how many times they upload their photo. \n
             **NOTE:** Requires a Bearer Token \n
+
+            Response: 200
+            ```
+            {
+                "code": 200,
+                "msg": "OK",
+                "data": {
+                    "count": 1
+                }
+            }
+            ```
         """
         result = service.get_count_photo_today(user_id=user.user_id)
         return JSONResponse(status_code=result["code"], content=result)

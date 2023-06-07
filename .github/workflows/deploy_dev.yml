@@ -1,0 +1,63 @@
+name: Deploy to Google App Engine (DEV)
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    name: Deploying Dev...
+    runs-on: ubuntu-latest
+  
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Add Firebase Service Account 
+      env:
+        FIREBASE_FILES: ${{ secrets.DEV_FIREBASE_SA }}
+      run: |
+        echo $FIREBASE_FILES
+        echo $FIREBASE_FILES > serviceAccountKey.json
+        cat serviceAccountKey.json
+
+    - name: Add GCP Service Account
+      env:
+        GCP_FILES: ${{ secrets.DEV_GCP_CREDENTIALS }}
+      run: |
+        echo $GCP_FILES
+        echo $GCP_FILES > service_gcp.json
+        cat service_gcp.json
+
+    - name: Add app.yaml
+      env:
+        API_KEY: ${{ secrets.DEV_API_KEY }}
+        BUCKET_NAME: ${{ secrets.DEV_BUCKET_NAME }}
+        PROJECT_ID: ${{ secrets.DEV_PROJECT_ID }}
+      run: |
+        cp app.example.yaml app.yaml
+        sed -i "s/your-api-key/$API_KEY/g" app.yaml
+        sed -i "s/your-project-id/$PROJECT_ID/g" app.yaml
+        sed -i "s/your-bucket-name/$BUCKET_NAME/g" app.yaml
+        cat app.yaml
+
+    - name: GCP Auth
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: '${{ secrets.DEV_GCP_CREDENTIALS }}'
+
+    - name: Set up Cloud SDK
+      uses: 'google-github-actions/setup-gcloud@v1'
+
+    - name: Use gcloud CLI
+      run: 'gcloud info'
+
+    - name: Deploy to GAE
+      id: deploy
+      uses: 'google-github-actions/deploy-appengine@v1'
+      with:
+        deliverables: app.yaml
+
+    - name: Test Endpoint
+      run: 'curl "${{ steps.deploy.outputs.url }}"'
