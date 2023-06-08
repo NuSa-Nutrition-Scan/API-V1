@@ -20,7 +20,6 @@ jobs:
       run: |
         echo $FIREBASE_FILES
         echo $FIREBASE_FILES > serviceAccountKey.json
-        cat serviceAccountKey.json
 
     - name: Add GCP Service Account
       env:
@@ -28,7 +27,6 @@ jobs:
       run: |
         echo $GCP_FILES
         echo $GCP_FILES > service_gcp.json
-        cat service_gcp.json
 
     - name: Add app.yaml
       env:
@@ -40,7 +38,6 @@ jobs:
         sed -i "s/your-api-key/$API_KEY/g" app.yaml
         sed -i "s/your-project-id/$PROJECT_ID/g" app.yaml
         sed -i "s/your-bucket-name/$BUCKET_NAME/g" app.yaml
-        cat app.yaml
 
     - name: GCP Auth
       uses: 'google-github-actions/auth@v1'
@@ -49,9 +46,6 @@ jobs:
 
     - name: Set up Cloud SDK
       uses: 'google-github-actions/setup-gcloud@v1'
-
-    - name: Use gcloud CLI
-      run: 'gcloud info'
 
     - name: Deploy to GAE
       id: deploy
