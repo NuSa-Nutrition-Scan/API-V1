@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 
 import metadata
 from config import Config
-from customizer import (http_customize_handler, validation_body_exception_handler)
+from customizer import http_customize_handler, validation_body_exception_handler
 from endpoint.auth import routes as auth_routes
 from endpoint.nutrition import routes as nutrition_routes
 from endpoint.settings import routes as settings_routes
