@@ -33,11 +33,13 @@ jobs:
         API_KEY: ${{ secrets.PROD_API_KEY }}
         BUCKET_NAME: ${{ secrets.PROD_BUCKET_NAME }}
         PROJECT_ID: ${{ secrets.PROD_PROJECT_ID }}
+        FOOD_PREDICTIONS_API: ${{ secrets.PROD_FOOD_PREDICTIONS_API }}
       run: |
         cp app.example.yaml app.yaml
         sed -i "s/your-api-key/$API_KEY/g" app.yaml
         sed -i "s/your-project-id/$PROJECT_ID/g" app.yaml
         sed -i "s/your-bucket-name/$BUCKET_NAME/g" app.yaml
+        sed -i "s/your-ml-food-predictions-api/$FOOD_PREDICTIONS_API/g" app.yaml
 
     - name: GCP Auth
       uses: 'google-github-actions/auth@v1'

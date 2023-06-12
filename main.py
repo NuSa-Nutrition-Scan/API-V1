@@ -16,7 +16,10 @@ config = Config()
 # service
 auth_service = AuthService(app=config.firebase_app, api_key=config.api_key)
 nutrition_service = NutritionService(
-    app=config.firebase_app, storage=config.storage, db=config.firestore_app
+    app=config.firebase_app,
+    storage=config.storage,
+    db=config.firestore_app,
+    ml=config.ml,
 )
 settings_service = SettingsService(
     app=config.firebase_app,

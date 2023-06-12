@@ -6,3 +6,4 @@ env_variables:
   API_KEY: your-api-key
   PROJECT_ID: your-project-id
   BUCKET_NAME: your-bucket-name
+  FOOD_PREDICTIONS_API: your-ml-food-predictions-api
