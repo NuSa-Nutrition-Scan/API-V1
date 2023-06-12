@@ -3,13 +3,15 @@ from typing import Any, BinaryIO
 from . import result
 from .gcp.firestore import Firestore
 from .gcp.storage import Storage
+from .machine_learning.app import MLPredictions
 
 
 class NutritionService:
-    def __init__(self, app: Any, storage: Storage, db: Firestore):
+    def __init__(self, app: Any, storage: Storage, db: Firestore, ml: MLPredictions):
         self.storage = storage
         self.app = app
         self.db = db
+        self.ml = ml
         self.MAX_PHOTO_INPUT = 10
 
     def upload_nutrition_photo(self, file: BinaryIO, user_id: str, content_type: str):
@@ -30,6 +32,16 @@ class NutritionService:
         )
 
         return result.OK(data=saved_result)
+
+    def predict_food(self, file: BinaryIO, content_type: str):
+        path = f"temp"
+        uploaded_photo_url = self.storage.store(
+            path=path, file=file, content_type=content_type
+        )
+
+        prediction_result = self.ml.predict_food(uploaded_photo_url)
+
+        return result.OK(data=prediction_result)
 
     def get_count_photo_today(self, user_id: str):
         count = self.db.get_count_nutrition_input_today(user_id=user_id)

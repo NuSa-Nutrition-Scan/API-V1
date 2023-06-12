@@ -1,5 +1,6 @@
-fastapi==0.96.0
+fastapi==0.97.0
 firebase_admin==6.1.0
+gradio_client==0.2.6
 protobuf==4.23.2
 pydantic==1.10.8
 python-dotenv==1.0.0

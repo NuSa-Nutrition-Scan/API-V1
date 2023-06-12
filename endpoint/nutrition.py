@@ -37,6 +37,64 @@ def routes(service: NutritionService) -> APIRouter:
         )
         return JSONResponse(status_code=result["code"], content=result)
 
+    @router.post("/photo/predict_food")
+    async def predict_food_photo_public(file: UploadFile) -> JSONResponse:
+        """
+        **NOTE:** THIS IS FOR DEBUGGING PURPOSE. WE HIGHLY ENCOURAGED TO USE THE `predict_food_secure` ROUTES FOR SECURITY. \n
+
+        Give me your photo, and i will predict what kind of food of that photo.\n
+        The explanation of the result: \n
+        1. final_result: we are very confident this is the result\n
+        2. other_options: other 2 results, that maybe also the result\n
+
+        Response: 200
+        ```
+        {
+            "code": 200,
+            "msg": "OK",
+            "data": {
+                "final_result": "pempek",
+                "other_options": [
+                    "Bubur Ayam",
+                    "tempe goreng"
+                ]
+            }
+        }
+        ```
+        """
+        result = service.predict_food(file=file.file, content_type=file.content_type)
+        return JSONResponse(status_code=result["code"], content=result)
+
+    @router.post("/photo/predict_food_secure")
+    async def predict_food_photo_secure(
+        file: UploadFile, user: User = Depends(extract_token)
+    ) -> JSONResponse:
+        """
+        📑 _API security is like giving your sensitive data to a toddler and hoping they won't accidentally share it with the world. - Anonymous_ \n
+
+        Give me your photo, and i will predict what kind of food of that photo.\n
+        The explanation of the result: \n
+        1. final_result: we are very confident this is the result\n
+        2. other_options: other 2 results, that maybe also the result\n
+
+        Response: 200
+        ```
+        {
+            "code": 200,
+            "msg": "OK",
+            "data": {
+                "final_result": "pempek",
+                "other_options": [
+                    "Bubur Ayam",
+                    "tempe goreng"
+                ]
+            }
+        }
+        ```
+        """
+        result = service.predict_food(file=file.file, content_type=file.content_type)
+        return JSONResponse(status_code=result["code"], content=result)
+
     @router.get("/photo/count")
     async def count_upload_photo(user: User = Depends(extract_token)) -> JSONResponse:
         """

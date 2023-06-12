@@ -8,6 +8,7 @@ from google.oauth2 import service_account
 
 from service.gcp.firestore import Firestore
 from service.gcp.storage import Storage
+from service.machine_learning.app import MLPredictions
 
 
 class Config:
@@ -19,6 +20,7 @@ class Config:
         self.bucket_name = get_bucket_name()
         self.storage = Storage(client=self.gcs_app, bucket_name=self.bucket_name)
         self.firestore_app = get_firestore(self.firebase_app)
+        self.ml = get_machine_learning_instance()
 
 
 def get_api_key() -> str:
@@ -93,3 +95,26 @@ def get_gcs(project_id: str) -> storage.Client:
 def get_firestore(firebase_app):
     client = firestore.client(app=firebase_app)
     return Firestore(db=client)
+
+
+def get_machine_learning_instance() -> MLPredictions:
+    try:
+        food_predict_url = os.getenv("FOOD_PREDICTIONS_API")
+        if food_predict_url is not None:
+            ml = MLPredictions(food_prediction_api=food_predict_url)
+            return ml
+
+        raise ValueError
+
+    except ValueError:
+        env = dotenv_values(".env")
+        food_predict_url = env["FOOD_PREDICTIONS_API"]
+        if food_predict_url is not None:
+            ml = MLPredictions(food_prediction_api=food_predict_url)
+            return ml
+
+        raise Exception
+
+    except Exception:
+        print("Machine Learning Instance creds is empty.")
+        exit(1)
