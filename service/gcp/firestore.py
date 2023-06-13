@@ -5,6 +5,7 @@ from google.cloud import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
 from typing import Optional, Dict
 
+
 class Firestore:
     def __init__(self, db):
         self.db = db
@@ -120,13 +121,14 @@ class Firestore:
 
         return None
 
-    def save_user_detail(self, 
-        weight: int, 
-        height: int, 
-        sex: str, 
-        calories_target: int, 
-        age: int, 
-        user_id: str
+    def save_user_detail(
+        self,
+        weight: int,
+        height: int,
+        sex: str,
+        calories_target: int,
+        age: int,
+        user_id: str,
     ) -> Optional[Dict]:
         collection_ref = self.db.collection("user_detail").document(user_id)
 
@@ -144,7 +146,7 @@ class Firestore:
         }
 
         collection_ref.update(updated_data)
-        
+
         return {
             "weight": weight,
             "sex": sex,
@@ -152,7 +154,6 @@ class Firestore:
             "height": height,
             "age": age,
         }
-
 
     # GMT +7
     def __curr_time(self) -> datetime:

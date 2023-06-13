@@ -26,11 +26,11 @@ class MLPredictions:
 
         os.remove(job)
         return output_dict
-    
+
     def predict_recommendation_food(
-        self, 
-        uid: str, 
-        age: int, 
+        self,
+        uid: str,
+        age: int,
         weight: int,
         height: int,
         calories_need: int,
@@ -38,11 +38,5 @@ class MLPredictions:
         amount_of_eat_every_day: int,
     ):
         job = self.food_recomendation_client(
-            uid,
-            age,
-            weight,
-            height,
-            calories_need,
-            gender,
-            amount_of_eat_every_day
+            uid, age, weight, height, calories_need, gender, amount_of_eat_every_day
         )

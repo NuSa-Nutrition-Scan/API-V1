@@ -14,7 +14,9 @@ from service.settings import SettingsService
 config = Config()
 
 # service
-auth_service = AuthService(app=config.firebase_app, api_key=config.api_key, db=config.firestore_app)
+auth_service = AuthService(
+    app=config.firebase_app, api_key=config.api_key, db=config.firestore_app
+)
 nutrition_service = NutritionService(
     app=config.firebase_app,
     storage=config.storage,

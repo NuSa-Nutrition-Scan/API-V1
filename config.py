@@ -102,7 +102,10 @@ def get_machine_learning_instance() -> MLPredictions:
         food_predict_url = os.getenv("FOOD_PREDICTIONS_API")
         food_recommendation_url = os.getenv("FOOD_PREDICTIONS_API")
         if food_predict_url is not None and food_recommendation_url is not None:
-            ml = MLPredictions(food_prediction_api=food_predict_url, food_recomendation_api=food_recommendation_url)
+            ml = MLPredictions(
+                food_prediction_api=food_predict_url,
+                food_recomendation_api=food_recommendation_url,
+            )
             return ml
 
         raise ValueError
@@ -112,7 +115,10 @@ def get_machine_learning_instance() -> MLPredictions:
         food_predict_url = env["FOOD_PREDICTIONS_API"]
         food_recommendation_url = env["FOOD_PREDICTIONS_API"]
         if food_predict_url is not None and food_recommendation_url is not None:
-            ml = MLPredictions(food_prediction_api=food_predict_url, food_recomendation_api=food_recommendation_url)
+            ml = MLPredictions(
+                food_prediction_api=food_predict_url,
+                food_recomendation_api=food_recommendation_url,
+            )
             return ml
 
         raise Exception

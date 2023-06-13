@@ -14,11 +14,11 @@ def routes(service: SettingsService) -> APIRouter:
     @router.patch("/profile/update")
     async def update_profile(
         name: Annotated[str, Form()],
-        weight: Annotated[int, Form()], 
-        height: Annotated[int, Form()], 
-        sex: Annotated[str, Form()], 
-        calories_target: Annotated[int, Form()], 
-        age: Annotated[int, Form()], 
+        weight: Annotated[int, Form()],
+        height: Annotated[int, Form()],
+        sex: Annotated[str, Form()],
+        calories_target: Annotated[int, Form()],
+        age: Annotated[int, Form()],
         refresh_token: Annotated[str, Form()],
         img: UploadFile = File(None),
         user: User = Depends(extract_token),
@@ -37,12 +37,17 @@ def routes(service: SettingsService) -> APIRouter:
             "code": 200,
             "msg": "OK",
             "data": {
-                "id": "lrGpw03KXZTy7ZW9Um2OO1Bxxr72",
-                "email": "useramboy@gmail.com",
-                "name": "Sundel Bolong",
-                "photo_url": "https://storage.googleapis.com/nusa-bucket/lrGpw03KXZTy7ZW9Um2OO1Bxxr72/profile/XhfwFfYfTSokE5SnyV7VBA",
-                "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjU0NWUyNDZjNTEwNmExMGQ2MzFiMTA0M2E3MWJiNTllNWJhMGM5NGQiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiU3VuZGVsIEJvbG9uZyIsInBpY3R1cmUiOiJodHRwczovL3N0b3JhZ2UuZ29vZ2xlYXBpcy5jb20vbnVzYS1idWNrZXQvbHJHcHcwM0tYWlR5N1pXOVVtMk9PMUJ4eHI3Mi9wcm9maWxlL1hoZndGZllmVFNva0U1U255VjdWQkEiLCJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vY3VraS01NTczZiIsImF1ZCI6ImN1a2ktNTU3M2YiLCJhdXRoX3RpbWUiOjE2ODYxNDAwMjQsInVzZXJfaWQiOiJsckdwdzAzS1haVHk3Wlc5VW0yT08xQnh4cjcyIiwic3ViIjoibHJHcHcwM0tYWlR5N1pXOVVtMk9PMUJ4eHI3MiIsImlhdCI6MTY4NjE0MDQ0MiwiZXhwIjoxNjg2MTQ0MDQyLCJlbWFpbCI6InVzZXJhbWJveUBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJ1c2VyYW1ib3lAZ21haWwuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.sgNYkuE3e5XX2Ko9h1sK3fFcAP_zRzXjdGhnD9ODuoGTAH_5gxESYa64j-MMNQmAgiJdtYpELoWQcDrNfefKWa2U2irHLcTBrLRIFvnVhVLzWfCGB2LfLxgdLtt4VSnJTbGzFZK3QQI_41jxhpFU3LinarRDpUUa6i0Z79IFhoZp-Bk8xVpInuj_zAuXiiNmKdzGb7K7FoFs8FH0BUO3qy2Ik9qIdDZ9yFtnz7vx_SNk50gxCYinVqEf71qoiaGODGhn0n6iU1rSub0tNVjr4j4MImCivtbEsjihUMtq-kNvxNjGMEyyjubpqS_qK5aNYw3aFNSPwAI12O2LlY9law",
-                "refresh_token": "APZUo0SRj1QpmSn459aRsyYbS--tsbXULY_m2MwzSxibx39JzrVgUs7Z2MfrvmPLP_Vm_k-oEk2sUsmu81QA0ReV7rykH9EBXN77nndLr4nEog80rnzfBhxHZDJlXaM-aadN9olBEC3wI0E27ALj287Z9pRq8wi8qKWWbNHLuLxcD29PJgLIsgL4-aEQ2AH11m91P9YYa2zza_PNoNeoFZzknZOgqA6j3A",
+                "weight": 80,
+                "sex": "M",
+                "calories_target": 2200,
+                "height": 170,
+                "age": 40,
+                "id": "vv60n7NvElPdS67LjUab0atAqTO2",
+                "email": "mamang@gmail.com",
+                "name": "Sambo",
+                "photo_url": "https://storage.googleapis.com/nusa-bucket/vv60n7NvElPdS67LjUab0atAqTO2/profile/Jz5MAYdCKMqJUCVSXn38ut",
+                "token": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjY3YmFiYWFiYTEwNWFkZDZiM2ZiYjlmZjNmZjVmZTNkY2E0Y2VkYTEiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiU2FtYm8iLCJwaWN0dXJlIjoiaHR0cHM6Ly9zdG9yYWdlLmdvb2dsZWFwaXMuY29tL251c2EtYnVja2V0L3Z2NjBuN052RWxQZFM2N0xqVWFiMGF0QXFUTzIvcHJvZmlsZS9KejVNQVlkQ0tNcUpVQ1ZTWG4zOHV0IiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2N1a2ktNTU3M2YiLCJhdWQiOiJjdWtpLTU1NzNmIiwiYXV0aF90aW1lIjoxNjg2NjY2MDg3LCJ1c2VyX2lkIjoidnY2MG43TnZFbFBkUzY3TGpVYWIwYXRBcVRPMiIsInN1YiI6InZ2NjBuN052RWxQZFM2N0xqVWFiMGF0QXFUTzIiLCJpYXQiOjE2ODY2NjYxNzgsImV4cCI6MTY4NjY2OTc3OCwiZW1haWwiOiJtYW1hbmdAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsibWFtYW5nQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.Bpzg8RAQxBHhMYrG8jL4fhq75tHBpA8TxHGpac6-u_gQzOQ898pW0nb-FuW8d3fqR-9lqs5rbK-b5gQ8tQl4W_I6-xhcDgxIC6BeyyGH_mMIb2oiZrkmZ0cHxUJX6kullQo8U6kzk4FYjDDxvYIudfr55t9rhjyOQqKnFApCJ-XapB1kjgVHVnm0YlKGTPoIksn0G7GAZdUf0uANw66UO4k9sXXDV0LwAqqptH88_f3T7PEyTrFn6JxFPolb6JoDvYOYgIzczeCVNMssLIDxXnJwcBacQI6_amuZB8YK07xxG3exVJNbRkHWd5yrf_5z_AB12g5OjwrqD8r_5KvTEw",
+                "refresh_token": "APZUo0QsF4hB9QJrgAwNb1JHUK_jvm57-u0qhwmSKDHZBMbYL7nxnHPdmItH_u1VrXGFqI_nRlS9y6Rpgh3589RKPnC-Xza8YsqFoU-yQkZK2suxfENktaW61gSraihL0G5ako637PGCFkG3-X7vwcP5QwXsyVBz0FZvnUepG-7nZp7FQORp7CnVsWBO_n32hDQzT-B1kXswaq1fFt2QVJGPpG16_MVX6g",
                 "expires_in": "3600"
             }
         }

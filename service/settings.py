@@ -35,17 +35,17 @@ class SettingsService:
         file: Optional[BinaryIO],
         content_type: str,
         user: Any,
-        weight: int, 
-        height: int, 
-        sex: str, 
-        calories_target: int, 
-        age: int, 
+        weight: int,
+        height: int,
+        sex: str,
+        calories_target: int,
+        age: int,
         refresh_token: str,
     ):
         if not self.db.is_user_exists(user.user_id):
             raise HTTPException(status_code=401, detail="Unauthorized")
-    
-        if sex not in ['M', 'F']:
+
+        if sex not in ["M", "F"]:
             return result.BadInput({"sex": "Gender can only be male or female"})
 
         uploaded_photo_url = ""
