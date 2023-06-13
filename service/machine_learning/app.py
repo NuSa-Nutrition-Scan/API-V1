@@ -5,8 +5,9 @@ from typing import Dict, Union
 
 
 class MLPredictions:
-    def __init__(self, food_prediction_api: str):
+    def __init__(self, food_prediction_api: str, food_recomendation_api: str):
         self.food_predict_client = Client(food_prediction_api)
+        self.food_recomendation_client = Client(food_recomendation_api)
 
     def predict_food(self, image_url: str) -> Dict[str, Union[str, list]]:
         job = self.food_predict_client.predict(image_url, api_name="/predict")
@@ -25,3 +26,23 @@ class MLPredictions:
 
         os.remove(job)
         return output_dict
+    
+    def predict_recommendation_food(
+        self, 
+        uid: str, 
+        age: int, 
+        weight: int,
+        height: int,
+        calories_need: int,
+        gender: str,
+        amount_of_eat_every_day: int,
+    ):
+        job = self.food_recomendation_client(
+            uid,
+            age,
+            weight,
+            height,
+            calories_need,
+            gender,
+            amount_of_eat_every_day
+        )

@@ -14,6 +14,11 @@ def routes(service: SettingsService) -> APIRouter:
     @router.patch("/profile/update")
     async def update_profile(
         name: Annotated[str, Form()],
+        weight: Annotated[int, Form()], 
+        height: Annotated[int, Form()], 
+        sex: Annotated[str, Form()], 
+        calories_target: Annotated[int, Form()], 
+        age: Annotated[int, Form()], 
         refresh_token: Annotated[str, Form()],
         img: UploadFile = File(None),
         user: User = Depends(extract_token),
@@ -50,6 +55,11 @@ def routes(service: SettingsService) -> APIRouter:
                 content_type=img.content_type,
                 user=user,
                 refresh_token=refresh_token,
+                weight=weight,
+                height=height,
+                sex=sex,
+                calories_target=calories_target,
+                age=age,
             )
             return JSONResponse(status_code=result["code"], content=result)
 
@@ -59,6 +69,11 @@ def routes(service: SettingsService) -> APIRouter:
             file=None,
             content_type="",
             refresh_token=refresh_token,
+            weight=weight,
+            height=height,
+            sex=sex,
+            calories_target=calories_target,
+            age=age,
         )
         return JSONResponse(status_code=result["code"], content=result)
 

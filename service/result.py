@@ -28,3 +28,8 @@ def Err(code: int, msg: str, data: Any = None):
 
 def InternalErr():
     return Result(500, "Internal Error").build()
+
+def BadInput(field: dict):
+    resp = {"code": 422, "msg": "Unprocessable Entity", "errors": field}
+    return resp
+

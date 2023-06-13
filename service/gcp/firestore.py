@@ -3,7 +3,7 @@ import datetime
 import pytz
 from google.cloud import firestore
 from google.cloud.firestore_v1.base_query import FieldFilter
-
+from typing import Optional, Dict
 
 class Firestore:
     def __init__(self, db):
@@ -86,6 +86,73 @@ class Firestore:
             user_nutrition_photos.append(doc)
 
         return user_nutrition_photos
+
+    def is_user_exists(self, user_id: str) -> bool:
+        return True if self.db.collection("user_detail").document(user_id) else False
+
+    def init_user_detail(self, user_id: str):
+        collection_ref = self.db.collection("user_detail").document(user_id)
+        updated_data = {
+            "weight": "",
+            "sex": "",
+            "calories_target": "",
+            "height": "",
+            "age": "",
+            "user_id": user_id,
+            "has_been_updated": False,
+        }
+
+        collection_ref.set(updated_data)
+
+    def get_user_detail(self, user_id: str) -> Optional[Dict]:
+        collection_ref = self.db.collection("user_detail").document(user_id)
+        user = collection_ref.get()
+
+        if user.exists:
+            data = user.to_dict()
+            return {
+                "weight": data.get("weight", ""),
+                "sex": data.get("sex", ""),
+                "calories_target": data.get("calories_target", ""),
+                "height": data.get("height", ""),
+                "age": data.get("age", ""),
+            }
+
+        return None
+
+    def save_user_detail(self, 
+        weight: int, 
+        height: int, 
+        sex: str, 
+        calories_target: int, 
+        age: int, 
+        user_id: str
+    ) -> Optional[Dict]:
+        collection_ref = self.db.collection("user_detail").document(user_id)
+
+        if not collection_ref:
+            return None
+
+        updated_data = {
+            "weight": weight,
+            "sex": sex,
+            "calories_target": calories_target,
+            "height": height,
+            "age": age,
+            "user_id": user_id,
+            "has_been_updated": True,
+        }
+
+        collection_ref.update(updated_data)
+        
+        return {
+            "weight": weight,
+            "sex": sex,
+            "calories_target": calories_target,
+            "height": height,
+            "age": age,
+        }
+
 
     # GMT +7
     def __curr_time(self) -> datetime:
