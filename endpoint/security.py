@@ -36,8 +36,6 @@ def extract_token(token: HTTPAuthorizationCredentials = Depends(security)) -> Us
             auth_token=id_token,
         )
 
-        print("security", user)
-
         return user
 
     except ExpiredIdTokenError:

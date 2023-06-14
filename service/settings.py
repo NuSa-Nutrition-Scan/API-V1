@@ -40,6 +40,7 @@ class SettingsService:
         sex: str,
         calories_target: int,
         age: int,
+        eat_per_day: int,
         refresh_token: str,
     ):
         if not self.db.is_user_exists(user.user_id):
@@ -96,6 +97,7 @@ class SettingsService:
             calories_target=calories_target,
             age=age,
             user_id=user.user_id,
+            eat_per_day=eat_per_day,
         )
 
         if updated_data is None:

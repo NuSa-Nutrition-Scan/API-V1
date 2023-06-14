@@ -37,7 +37,7 @@ def routes(service: NutritionService) -> APIRouter:
         )
         return JSONResponse(status_code=result["code"], content=result)
 
-    @router.post("/photo/predict_food")
+    @router.post("/photo/predict_food", deprecated=True)
     async def predict_food_photo_public(file: UploadFile) -> JSONResponse:
         """
         **NOTE:** THIS IS FOR DEBUGGING PURPOSE. WE HIGHLY ENCOURAGED TO USE THE `predict_food_secure` ROUTES FOR SECURITY. \n
@@ -53,11 +53,9 @@ def routes(service: NutritionService) -> APIRouter:
             "code": 200,
             "msg": "OK",
             "data": {
-                "final_result": "pempek",
-                "other_options": [
-                    "Bubur Ayam",
-                    "tempe goreng"
-                ]
+                "id": "FNT004",
+                "name": "Sate",
+                "calories": 607
             }
         }
         ```
@@ -83,16 +81,14 @@ def routes(service: NutritionService) -> APIRouter:
             "code": 200,
             "msg": "OK",
             "data": {
-                "final_result": "pempek",
-                "other_options": [
-                    "Bubur Ayam",
-                    "tempe goreng"
-                ]
+                "id": "FNT004",
+                "name": "Sate",
+                "calories": 607
             }
         }
         ```
         """
-        result = service.predict_food(file=file.file, content_type=file.content_type)
+        result = service.predict_food(file=file.file, content_type=file.content_type, user_id=user.user_id)
         return JSONResponse(status_code=result["code"], content=result)
 
     @router.get("/photo/count")

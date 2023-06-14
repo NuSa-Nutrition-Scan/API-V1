@@ -22,13 +22,15 @@ class AuthService:
 
     def create_user(self, name: str, email: str, password: str) -> result.Result:
         try:
-            auth.create_user(
+            user = auth.create_user(
                 app=self.app,
                 display_name=name,
                 email=email,
                 email_verified=True,
                 password=password,
             )
+            
+            self.db.init_user_detail(user.uid)
 
             return result.Created()
 
@@ -68,8 +70,6 @@ class AuthService:
                 "refresh_token": obj["refreshToken"],
                 "expires_in": obj["expiresIn"],
             }
-
-            self.db.init_user_detail(resp["id"])
 
             return result.OK(resp)
         except requests.exceptions.HTTPError as e:

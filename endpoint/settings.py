@@ -19,6 +19,7 @@ def routes(service: SettingsService) -> APIRouter:
         sex: Annotated[str, Form()],
         calories_target: Annotated[int, Form()],
         age: Annotated[int, Form()],
+        eat_per_day: Annotated[int, Form()],
         refresh_token: Annotated[str, Form()],
         img: UploadFile = File(None),
         user: User = Depends(extract_token),
@@ -42,6 +43,7 @@ def routes(service: SettingsService) -> APIRouter:
                 "calories_target": 2200,
                 "height": 170,
                 "age": 40,
+                "eat_per_day": 3,
                 "id": "vv60n7NvElPdS67LjUab0atAqTO2",
                 "email": "mamang@gmail.com",
                 "name": "Sambo",
@@ -65,6 +67,7 @@ def routes(service: SettingsService) -> APIRouter:
                 sex=sex,
                 calories_target=calories_target,
                 age=age,
+                eat_per_day=eat_per_day,
             )
             return JSONResponse(status_code=result["code"], content=result)
 
@@ -79,6 +82,7 @@ def routes(service: SettingsService) -> APIRouter:
             sex=sex,
             calories_target=calories_target,
             age=age,
+            eat_per_day=eat_per_day,
         )
         return JSONResponse(status_code=result["code"], content=result)
 
