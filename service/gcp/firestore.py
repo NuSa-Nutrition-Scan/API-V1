@@ -101,7 +101,7 @@ class Firestore:
             "eat_per_day": 3,
             "user_id": user_id,
             "has_been_updated": False,
-            "ml_id": self.get_global_id_and_update()
+            "ml_id": self.get_global_id_and_update(),
         }
 
         collection_ref.set(updated_data)
@@ -138,7 +138,7 @@ class Firestore:
 
         if not collection_ref:
             return None
-        
+
         ml_id = collection_ref.get().to_dict()["ml_id"]
 
         updated_data = {
@@ -163,16 +163,14 @@ class Firestore:
             "eat_per_day": eat_per_day,
             "age": age,
         }
-    
+
     def get_global_id_and_update(self) -> str:
-        collection_ref = self.db.collection("global_id_for_ml").document("id")    
+        collection_ref = self.db.collection("global_id_for_ml").document("id")
         global_id = collection_ref.get()
 
         result_id = global_id.to_dict()["current"]
 
-        collection_ref.update({
-            "current": self.__get_increment_global_id(result_id)
-        })
+        collection_ref.update({"current": self.__get_increment_global_id(result_id)})
 
         return result_id
 
@@ -180,8 +178,8 @@ class Firestore:
         query_param = "Lontong" if name == "Lontong" or name == "lontong" else name
         print("ini query param", query_param)
 
-        collection_ref = self.db.collection('food_collection').document(query_param)
-        
+        collection_ref = self.db.collection("food_collection").document(query_param)
+
         result = collection_ref.get().to_dict()
 
         return {
@@ -189,9 +187,8 @@ class Firestore:
             "name": query_param,
             "calories_for_2x": result["calories_for_2x"],
             "calories_for_3x": result["calories_for_3x"],
-            "calories_for_4x": result["calories_for_4x"]
+            "calories_for_4x": result["calories_for_4x"],
         }
-
 
     # GMT +7
     def __curr_time(self) -> datetime:
@@ -206,7 +203,7 @@ class Firestore:
         utc7_timestamp_str = utc7_timestamp.strftime("%Y-%m-%d %H:%M:%S")
 
         return utc7_timestamp_str
-    
+
     def __get_increment_global_id(self, id: str) -> str:
         num_str = id[3:]
         num = int(num_str)

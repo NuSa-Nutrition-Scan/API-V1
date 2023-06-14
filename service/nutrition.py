@@ -51,7 +51,7 @@ class NutritionService:
             }
 
             return result.OK(data=resp)
-        
+
         if eat_per_day == 3 or eat_per_day == "3":
             resp = {
                 "id": final_result["id"],
@@ -60,7 +60,7 @@ class NutritionService:
             }
 
             return result.OK(data=resp)
-        
+
         resp = {
             "id": final_result["id"],
             "name": final_result["name"],

@@ -29,7 +29,7 @@ class AuthService:
                 email_verified=True,
                 password=password,
             )
-            
+
             self.db.init_user_detail(user.uid)
 
             return result.Created()

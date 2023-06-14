@@ -88,7 +88,9 @@ def routes(service: NutritionService) -> APIRouter:
         }
         ```
         """
-        result = service.predict_food(file=file.file, content_type=file.content_type, user_id=user.user_id)
+        result = service.predict_food(
+            file=file.file, content_type=file.content_type, user_id=user.user_id
+        )
         return JSONResponse(status_code=result["code"], content=result)
 
     @router.get("/photo/count")
