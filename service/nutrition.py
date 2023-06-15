@@ -34,10 +34,19 @@ class NutritionService:
         return result.OK(data=saved_result)
 
     def predict_food(self, file: BinaryIO, content_type: str, user_id: str):
+        user_upload_today = self.db.get_user_scan_count(user_id)
+        if user_upload_today >= self.MAX_PHOTO_INPUT:
+            return result.Err(
+                code=400,
+                msg="You have reached the maximum photo you can upload. Try again tomorrow",
+            )
+
         path = f"temp"
         uploaded_photo_url = self.storage.store(
             path=path, file=file, content_type=content_type
         )
+
+        self.db.increment_user_scan_count(user_id)
 
         prediction_result = self.ml.predict_food(uploaded_photo_url)
         eat_per_day = self.db.get_user_detail(user_id)["eat_per_day"]
@@ -81,6 +90,8 @@ class NutritionService:
             "protein": final_result["protein"],
             "vitamin": final_result["vitamin"],
         }
+
+        self.db.increment_user_scan_count(user_id)
 
         return result.OK(data=resp)
 

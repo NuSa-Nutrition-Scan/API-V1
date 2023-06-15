@@ -106,6 +106,25 @@ class Firestore:
 
         collection_ref.set(updated_data)
 
+    def init_user_scan_count(self, user_id: str):
+        collection_ref = self.db.collection("user_scan_count").document(user_id)
+        collection_ref.set({
+            "count": 0
+        })
+
+    def get_user_scan_count(self, user_id: str) -> int:
+        collection_ref = self.db.collection("user_scan_count").document(user_id)
+        ref = collection_ref.get().to_dict()
+        return ref["count"]
+    
+    def increment_user_scan_count(self, user_id: str):
+        collection_ref = self.db.collection("user_scan_count").document(user_id)
+        count = self.get_user_scan_count(user_id)
+        collection_ref.set({
+            "count": count + 1
+        })
+
+
     def get_user_detail(self, user_id: str) -> Optional[Dict]:
         collection_ref = self.db.collection("user_detail").document(user_id)
         user = collection_ref.get()

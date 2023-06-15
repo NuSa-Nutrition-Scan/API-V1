@@ -31,6 +31,7 @@ class AuthService:
             )
 
             self.db.init_user_detail(user.uid)
+            self.db.init_user_scan_count(user.uid)
 
             return result.Created()
 
