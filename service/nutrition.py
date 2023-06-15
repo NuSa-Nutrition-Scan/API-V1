@@ -72,16 +72,18 @@ class NutritionService:
     def get_recommendation_food(self, user_id: str):
         user = self.db.get_user_detail(user_id)
         if user["has_been_updated"] is False:
-            return result.Err(400, "Can't generate recommendation. Please fill the data first in the profile.")
-        
+            return result.Err(
+                400,
+                "Can't generate recommendation. Please fill the data first in the profile.",
+            )
+
         print(user)
-        
+
         resp = self.db.get_recommendation_food(user_id, user["eat_per_day"])
         if resp is None:
             return result.Err(code=423, msg="Still generating. Please wait")
-        
-        return result.OK(data=resp)
 
+        return result.OK(data=resp)
 
     def get_count_photo_today(self, user_id: str):
         count = self.db.get_count_nutrition_input_today(user_id=user_id)

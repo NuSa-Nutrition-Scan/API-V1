@@ -191,16 +191,17 @@ class Firestore:
         }
 
     def get_recommendation_food(self, user_id: str, eat_per_day: int) -> Optional[Dict]:
-        food_recom_collection = self.db.collection("food_recommendation").document(user_id)
+        food_recom_collection = self.db.collection("food_recommendation").document(
+            user_id
+        )
         ref = food_recom_collection.get()
-    
+
         if ref is None:
             return None
-        
+
         key = f"{eat_per_day}x"
 
         return ref.to_dict()[key]
-
 
     # GMT +7
     def __curr_time(self) -> datetime:

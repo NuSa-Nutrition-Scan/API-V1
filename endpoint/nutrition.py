@@ -10,7 +10,9 @@ def routes(service: NutritionService) -> APIRouter:
     router = APIRouter(prefix="/nutrition", tags=["Nutrition"])
 
     @router.get("/recommendation")
-    async def get_recommendation_food_for_user(user: User = Depends(extract_token)) -> JSONResponse:
+    async def get_recommendation_food_for_user(
+        user: User = Depends(extract_token),
+    ) -> JSONResponse:
         """
         Get user recommendation food.\n
         If still generating? Response 423 will be thrown.\n
@@ -70,7 +72,7 @@ def routes(service: NutritionService) -> APIRouter:
             }
         }
         ```
-        
+
         Response: 200 (if eat times per day is 3)
         ```
         {
@@ -145,19 +147,19 @@ def routes(service: NutritionService) -> APIRouter:
                 ],
                 "recom": [
                     {
-                        "Dinner": "Biskuit",
+                        "Snacks": "Biskuit",
                         "Lunch": "Mi Goreng",
                         "Breakfast": "Daging sapi kornet",
                         "Dinner": "Biskuit"
                     },
                     {
-                        "Dinner": "Biskuit",
+                        "Snacks": "Sate",
                         "Lunch": "Biskuit",
                         "Breakfast": "Mi Goreng",
                         "Dinner": "Martabak Mesir"
                     },
                     {
-                        "Dinner": "Biskuit",
+                        "Snacks": "Nasi",
                         "Lunch": "Biskuit",
                         "Breakfast": "Mi Goreng",
                         "Dinner": "Roti putih"
@@ -255,7 +257,6 @@ def routes(service: NutritionService) -> APIRouter:
             file=file.file, content_type=file.content_type, user_id=user.user_id
         )
         return JSONResponse(status_code=result["code"], content=result)
- 
 
     @router.get("/photo/count")
     async def count_upload_photo(user: User = Depends(extract_token)) -> JSONResponse:
