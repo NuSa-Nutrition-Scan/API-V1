@@ -32,9 +32,10 @@ def extract_token(token: HTTPAuthorizationCredentials = Depends(security)) -> Us
             id_user=credentials["user_id"],
             name=credentials["name"],
             email=credentials["email"],
-            photo_url=credentials["picture"],
+            photo_url=credentials.get("picture", ""),
             auth_token=id_token,
         )
+
         return user
 
     except ExpiredIdTokenError:

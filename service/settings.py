@@ -2,11 +2,14 @@ import json
 from typing import Any, BinaryIO, Optional
 
 from firebase_admin import auth
+from fastapi import HTTPException
 
 from . import result
 from .authentication import AuthService
 from .gcp.firestore import Firestore
 from .gcp.storage import Storage
+
+from collections import ChainMap
 
 DEFAULT_PHOTO_URL = "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg"
 
@@ -32,12 +35,24 @@ class SettingsService:
         file: Optional[BinaryIO],
         content_type: str,
         user: Any,
+        weight: int,
+        height: int,
+        sex: str,
+        calories_target: int,
+        age: int,
+        eat_per_day: int,
         refresh_token: str,
     ):
+        if not self.db.is_user_exists(user.user_id):
+            raise HTTPException(status_code=401, detail="Unauthorized")
+
+        if sex not in ["M", "F"]:
+            return result.BadInput({"sex": "Gender can only be male or female"})
+
         uploaded_photo_url = ""
 
         if file is not None:
-            if user.photo_url != DEFAULT_PHOTO_URL:
+            if user.photo_url != "":
                 photo_id = user.photo_url.split("/")[-1]
                 path = f"{user.user_id}/profile"
 
@@ -75,7 +90,20 @@ class SettingsService:
 
             return result.InternalErr()
 
-        # self.auth_service.revoke_token(user.user_id)
+        updated_data = self.db.save_user_detail(
+            weight=weight,
+            height=height,
+            sex=sex,
+            calories_target=calories_target,
+            age=age,
+            user_id=user.user_id,
+            eat_per_day=eat_per_day,
+        )
+
+        if updated_data is None:
+            print("gabisa update data")
+            return result.InternalErr()
+
         token = self.auth_service.refresh_token(refresh_token=refresh_token)
 
         resp = {
@@ -88,7 +116,9 @@ class SettingsService:
             "expires_in": token["data"]["expires_in"],
         }
 
-        return result.OK(resp)
+        updated_result = dict(ChainMap(resp, updated_data))
+
+        return result.OK(data=updated_result)
 
     def get_upload_nutrition_photo_history(self, user_id: str, page: int = 0):
         paginated_photos = self.db.get_all_user_nutrition_photo(

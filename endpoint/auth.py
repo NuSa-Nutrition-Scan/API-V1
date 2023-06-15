@@ -110,18 +110,9 @@ def routes(service: AuthService) -> APIRouter:
         }
         ```
         """
-        return JSONResponse(
-            status_code=200,
-            content={
-                "code": 200,
-                "msg": "OK",
-                "data": {
-                    "id": user.user_id,
-                    "name": user.name,
-                    "email": user.email,
-                    "photo_url": user.photo_url,
-                },
-            },
-        )
+
+        result = service.who_am_i(user)
+
+        return JSONResponse(status_code=result["code"], content=result)
 
     return router

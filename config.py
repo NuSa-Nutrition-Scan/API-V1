@@ -100,8 +100,12 @@ def get_firestore(firebase_app):
 def get_machine_learning_instance() -> MLPredictions:
     try:
         food_predict_url = os.getenv("FOOD_PREDICTIONS_API")
-        if food_predict_url is not None:
-            ml = MLPredictions(food_prediction_api=food_predict_url)
+        food_recommendation_url = os.getenv("FOOD_PREDICTIONS_API")
+        if food_predict_url is not None and food_recommendation_url is not None:
+            ml = MLPredictions(
+                food_prediction_api=food_predict_url,
+                food_recomendation_api=food_recommendation_url,
+            )
             return ml
 
         raise ValueError
@@ -109,8 +113,12 @@ def get_machine_learning_instance() -> MLPredictions:
     except ValueError:
         env = dotenv_values(".env")
         food_predict_url = env["FOOD_PREDICTIONS_API"]
-        if food_predict_url is not None:
-            ml = MLPredictions(food_prediction_api=food_predict_url)
+        food_recommendation_url = env["FOOD_PREDICTIONS_API"]
+        if food_predict_url is not None and food_recommendation_url is not None:
+            ml = MLPredictions(
+                food_prediction_api=food_predict_url,
+                food_recomendation_api=food_recommendation_url,
+            )
             return ml
 
         raise Exception

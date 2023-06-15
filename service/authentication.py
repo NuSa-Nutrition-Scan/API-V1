@@ -6,26 +6,31 @@ from firebase_admin import auth
 from firebase_admin._auth_utils import EmailAlreadyExistsError
 from firebase_admin.exceptions import FirebaseError
 
+from .gcp.firestore import Firestore
+
+from collections import ChainMap
 from . import result
 
 DEFAULT_PHOTO_URL = "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg"
 
 
 class AuthService:
-    def __init__(self, app: Any, api_key: str):
+    def __init__(self, app: Any, api_key: str, db: Firestore):
         self.app = app
         self.api_key = api_key
+        self.db = db
 
     def create_user(self, name: str, email: str, password: str) -> result.Result:
         try:
-            auth.create_user(
+            user = auth.create_user(
                 app=self.app,
                 display_name=name,
                 email=email,
                 email_verified=True,
                 password=password,
-                photo_url=DEFAULT_PHOTO_URL,
             )
+
+            self.db.init_user_detail(user.uid)
 
             return result.Created()
 
@@ -121,6 +126,22 @@ class AuthService:
         except Exception as e:
             print("AuthService.refresh_token:", e)
             return result.InternalErr()
+
+    def who_am_i(self, user):
+        creds = self.db.get_user_detail(user.user_id)
+        if creds is None:
+            print("user is none")
+            return result.InternalErr()
+
+        resp = {
+            "id": user.user_id,
+            "name": user.name,
+            "email": user.email,
+            "photo_url": user.photo_url,
+        }
+
+        combined_resp = dict(ChainMap(resp, creds))
+        return result.OK(combined_resp)
 
     def _extract_response_text(self, data: Any, key: str) -> str:
         data = json.loads(data)

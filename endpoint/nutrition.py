@@ -9,6 +9,171 @@ from .security import User, extract_token
 def routes(service: NutritionService) -> APIRouter:
     router = APIRouter(prefix="/nutrition", tags=["Nutrition"])
 
+    @router.get("/recommendation")
+    async def get_recommendation_food_for_user(
+        user: User = Depends(extract_token),
+    ) -> JSONResponse:
+        """
+        Get user recommendation food.\n
+        If still generating? Response 423 will be thrown.\n
+
+        Response: 423
+        ```
+        {
+            "code": 423,
+            "msg": "Still generating. Please wait"
+        }
+        ```
+
+        <br/>
+
+        All Responses (Notice the "recom" part)
+
+        Response: 200 (if eat times per day is 2)
+        ```
+        {
+            "code": 200,
+            "msg": "OK",
+            "data": {
+                "top15": [
+                    {
+                        "id": "FNT151",
+                        "name": "Singkong Goreng"
+                    },
+                    {
+                        "id": "FNT040",
+                        "name": "Ketupat kandangan"
+                    },
+                    {
+                        "id": "FNT010",
+                        "name": "Sop konro"
+                    },
+                    {
+                        "id": "FNT024",
+                        "name": "Kembang tahu rebus"
+                    },
+                    //until 15 data
+                ],
+                "recom": [
+                    {
+                        "Lunch": "Mi Goreng",
+                        "Dinner": "Biskuit"
+                    },
+                    {
+                        "Lunch": "Daging sapi kornet",
+                        "Dinner": "Mi Goreng"
+                    },
+                    {
+                        "Lunch": "Daging sapi kornet",
+                        "Dinner": "Biskuit"
+                    },
+                   //until 20 data
+                ]
+            }
+        }
+        ```
+
+        Response: 200 (if eat times per day is 3)
+        ```
+        {
+            "code": 200,
+            "msg": "OK",
+            "data": {
+                "top15": [
+                    {
+                        "id": "FNT151",
+                        "name": "Singkong Goreng"
+                    },
+                    {
+                        "id": "FNT040",
+                        "name": "Ketupat kandangan"
+                    },
+                    {
+                        "id": "FNT010",
+                        "name": "Sop konro"
+                    },
+                    {
+                        "id": "FNT024",
+                        "name": "Kembang tahu rebus"
+                    },
+                    //until 15 data
+                ],
+                "recom": [
+                    {
+                        "Lunch": "Mi Goreng",
+                        "Breakfast": "Daging sapi kornet",
+                        "Dinner": "Biskuit"
+                    },
+                    {
+                        "Lunch": "Biskuit",
+                        "Breakfast": "Mi Goreng",
+                        "Dinner": "Martabak Mesir"
+                    },
+                    {
+                        "Lunch": "Biskuit",
+                        "Breakfast": "Mi Goreng",
+                        "Dinner": "Roti putih"
+                    },
+                   //until 20 data
+                ]
+            }
+        }
+        ```
+
+        Response: 200 (if eat times per day is 4)
+        ```
+        {
+            "code": 200,
+            "msg": "OK",
+            "data": {
+                "top15": [
+                    {
+                        "id": "FNT151",
+                        "name": "Singkong Goreng"
+                    },
+                    {
+                        "id": "FNT040",
+                        "name": "Ketupat kandangan"
+                    },
+                    {
+                        "id": "FNT010",
+                        "name": "Sop konro"
+                    },
+                    {
+                        "id": "FNT024",
+                        "name": "Kembang tahu rebus"
+                    },
+                    //until 15 data
+                ],
+                "recom": [
+                    {
+                        "Snacks": "Biskuit",
+                        "Lunch": "Mi Goreng",
+                        "Breakfast": "Daging sapi kornet",
+                        "Dinner": "Biskuit"
+                    },
+                    {
+                        "Snacks": "Sate",
+                        "Lunch": "Biskuit",
+                        "Breakfast": "Mi Goreng",
+                        "Dinner": "Martabak Mesir"
+                    },
+                    {
+                        "Snacks": "Nasi",
+                        "Lunch": "Biskuit",
+                        "Breakfast": "Mi Goreng",
+                        "Dinner": "Roti putih"
+                    },
+                   //until 20 data
+                ]
+            }
+        }
+        ```
+        """
+
+        result = service.get_recommendation_food(user.user_id)
+        return JSONResponse(status_code=result["code"], content=result)
+
     @router.post("/photo")
     async def upload_photo(
         file: UploadFile, user: User = Depends(extract_token)
@@ -37,7 +202,7 @@ def routes(service: NutritionService) -> APIRouter:
         )
         return JSONResponse(status_code=result["code"], content=result)
 
-    @router.post("/photo/predict_food")
+    @router.post("/photo/predict_food", deprecated=True)
     async def predict_food_photo_public(file: UploadFile) -> JSONResponse:
         """
         **NOTE:** THIS IS FOR DEBUGGING PURPOSE. WE HIGHLY ENCOURAGED TO USE THE `predict_food_secure` ROUTES FOR SECURITY. \n
@@ -53,11 +218,9 @@ def routes(service: NutritionService) -> APIRouter:
             "code": 200,
             "msg": "OK",
             "data": {
-                "final_result": "pempek",
-                "other_options": [
-                    "Bubur Ayam",
-                    "tempe goreng"
-                ]
+                "id": "FNT004",
+                "name": "Sate",
+                "calories": 607
             }
         }
         ```
@@ -83,16 +246,16 @@ def routes(service: NutritionService) -> APIRouter:
             "code": 200,
             "msg": "OK",
             "data": {
-                "final_result": "pempek",
-                "other_options": [
-                    "Bubur Ayam",
-                    "tempe goreng"
-                ]
+                "id": "FNT004",
+                "name": "Sate",
+                "calories": 607
             }
         }
         ```
         """
-        result = service.predict_food(file=file.file, content_type=file.content_type)
+        result = service.predict_food(
+            file=file.file, content_type=file.content_type, user_id=user.user_id
+        )
         return JSONResponse(status_code=result["code"], content=result)
 
     @router.get("/photo/count")
