@@ -48,6 +48,11 @@ class NutritionService:
                 "id": final_result["id"],
                 "name": final_result["name"],
                 "calories": final_result["calories_for_2x"],
+                "karbohidrat": final_result["karbohidrat"],
+                "lemak": final_result["lemak"],
+                "mineral": final_result["mineral"],
+                "protein": final_result["protein"],
+                "vitamin": final_result["vitamin"],
             }
 
             return result.OK(data=resp)
@@ -57,6 +62,11 @@ class NutritionService:
                 "id": final_result["id"],
                 "name": final_result["name"],
                 "calories": final_result["calories_for_3x"],
+                "karbohidrat": final_result["karbohidrat"],
+                "lemak": final_result["lemak"],
+                "mineral": final_result["mineral"],
+                "protein": final_result["protein"],
+                "vitamin": final_result["vitamin"],
             }
 
             return result.OK(data=resp)
@@ -65,6 +75,11 @@ class NutritionService:
             "id": final_result["id"],
             "name": final_result["name"],
             "calories": final_result["calories_for_4x"],
+            "karbohidrat": final_result["karbohidrat"],
+            "lemak": final_result["lemak"],
+            "mineral": final_result["mineral"],
+            "protein": final_result["protein"],
+            "vitamin": final_result["vitamin"],
         }
 
         return result.OK(data=resp)

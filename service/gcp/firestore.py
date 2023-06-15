@@ -162,6 +162,7 @@ class Firestore:
             "height": height,
             "eat_per_day": eat_per_day,
             "age": age,
+            "has_been_updated": True,
         }
 
     def get_global_id_and_update(self) -> str:
@@ -176,7 +177,6 @@ class Firestore:
 
     def get_food_by_name(self, name: str) -> dict:
         query_param = "Lontong" if name == "Lontong" or name == "lontong" else name
-        print("ini query param", query_param)
 
         collection_ref = self.db.collection("food_collection").document(query_param)
 
@@ -188,6 +188,11 @@ class Firestore:
             "calories_for_2x": result["calories_for_2x"],
             "calories_for_3x": result["calories_for_3x"],
             "calories_for_4x": result["calories_for_4x"],
+            "karbohidrat": result["karbohidrat"],
+            "lemak": result["lemak"],
+            "mineral": result["mineral"],
+            "protein": result["protein"],
+            "vitamin": result["vitamin"],
         }
 
     def get_recommendation_food(self, user_id: str, eat_per_day: int) -> Optional[Dict]:
