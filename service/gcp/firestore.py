@@ -118,7 +118,7 @@ class Firestore:
                 "calories_target": data.get("calories_target", 0),
                 "height": data.get("height", 0),
                 "age": data.get("age", 0),
-                "eat_per_day": 3,
+                "eat_per_day": data.get("eat_per_day", 0),
                 "has_been_updated": data.get("has_been_updated", False),
             }
 
@@ -189,6 +189,18 @@ class Firestore:
             "calories_for_3x": result["calories_for_3x"],
             "calories_for_4x": result["calories_for_4x"],
         }
+
+    def get_recommendation_food(self, user_id: str, eat_per_day: int) -> Optional[Dict]:
+        food_recom_collection = self.db.collection("food_recommendation").document(user_id)
+        ref = food_recom_collection.get()
+    
+        if ref is None:
+            return None
+        
+        key = f"{eat_per_day}x"
+
+        return ref.to_dict()[key]
+
 
     # GMT +7
     def __curr_time(self) -> datetime:
