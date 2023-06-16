@@ -2,6 +2,9 @@
 
 NuSa API v1 provides the backend API for our application, enabling seamless communication between the client-side application and the server. This API is designed to power our nutrition tracking and analysis platform, allowing users to manage their nutrition data and interact with various features.
 
+### Team: 
+Cloud Computing
+
 ## Features
 
 ### Authentication section
