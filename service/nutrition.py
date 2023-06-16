@@ -62,7 +62,7 @@ class NutritionService:
                 "mineral": final_result["mineral"],
                 "protein": final_result["protein"],
                 "vitamin": final_result["vitamin"],
-                "img": final_result["img"]
+                "img": final_result["img"],
             }
 
             return result.OK(data=resp)
@@ -77,8 +77,7 @@ class NutritionService:
                 "mineral": final_result["mineral"],
                 "protein": final_result["protein"],
                 "vitamin": final_result["vitamin"],
-                "img": final_result["img"]
-
+                "img": final_result["img"],
             }
 
             return result.OK(data=resp)
@@ -92,7 +91,7 @@ class NutritionService:
             "mineral": final_result["mineral"],
             "protein": final_result["protein"],
             "vitamin": final_result["vitamin"],
-            "img": final_result["img"]
+            "img": final_result["img"],
         }
 
         self.db.increment_user_scan_count(user_id)
