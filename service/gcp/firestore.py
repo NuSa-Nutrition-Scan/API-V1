@@ -202,12 +202,12 @@ class Firestore:
             "calories_for_2x": result["calories_for_2x"],
             "calories_for_3x": result["calories_for_3x"],
             "calories_for_4x": result["calories_for_4x"],
-            "karbohidrat": result["karbohidrat"],
-            "lemak": result["lemak"],
-            "mineral": result["mineral"],
-            "protein": result["protein"],
-            "vitamin": result["vitamin"],
-            "img": result["img"],
+            "karbohidrat": result.get("karbohidrat", 0),
+            "lemak": result.get("lemak", 0),
+            "mineral": result.get("mineral", 0),
+            "protein": result.get("protein", 0),
+            "vitamin": result.get("vitamin", 0),
+            "img": result.get("img", ""),
         }
 
     def get_recommendation_food(self, user_id: str, eat_per_day: int) -> Optional[Dict]:

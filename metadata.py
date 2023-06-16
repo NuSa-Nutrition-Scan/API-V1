@@ -1,6 +1,6 @@
 title = "NuSa API"
 
-version = "0.5.5"
+version = "1.0.0"
 
 contact = {
     "name": "NuSa - CC Team",
@@ -15,7 +15,7 @@ license_info = {
 description = """
 # [WATCH THIS FIRST!](https://www.youtube.com/watch?v=xvFZjo5PgG0)
 
-NuSa API helps you, our solo mobile developers (LOL), to run your app. 🚀
+NuSa API helps you, our solo mobile developer, to run your app. 🚀
 
 ## Features
 
@@ -24,7 +24,8 @@ You will be able to:
 * **Authenticate user**
 * **Get user profile & update it**
 * **Upload photo with limit 10 every day**
-* **Integrate with machine learning**  (_not implemented_).
+* **Get your personal food recommendation**
+* **Integrate with machine learning features**
 
 #### NOTES FOR RESPONSE
 
