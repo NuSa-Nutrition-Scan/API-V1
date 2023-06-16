@@ -212,6 +212,7 @@ class Firestore:
             "mineral": result["mineral"],
             "protein": result["protein"],
             "vitamin": result["vitamin"],
+            "img": result["img"],
         }
 
     def get_recommendation_food(self, user_id: str, eat_per_day: int) -> Optional[Dict]:
