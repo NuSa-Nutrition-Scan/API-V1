@@ -18,9 +18,6 @@ NuSa API v1 provides the backend API for our application, enabling seamless comm
 - **Upload photo**: Enable users to upload photos of their meals or food items.
 - **Set max upload**: Limit the number of photo uploads to 10 per day.
 
-## Todo
-Integration with Machine Learning features is planned for future development. This will enhance the nutrition tracking and analysis capabilities by leveraging machine learning algorithms for more accurate insights and predictions.
-
 ## Tech Stack
 
 - **Python + FastAPI**: The API is built using Python with the FastAPI framework, which offers high performance and easy-to-use tools for building web APIs.

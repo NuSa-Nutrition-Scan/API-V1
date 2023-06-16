@@ -106,6 +106,20 @@ class Firestore:
 
         collection_ref.set(updated_data)
 
+    def init_user_scan_count(self, user_id: str):
+        collection_ref = self.db.collection("user_scan_count").document(user_id)
+        collection_ref.set({"count": 0})
+
+    def get_user_scan_count(self, user_id: str) -> int:
+        collection_ref = self.db.collection("user_scan_count").document(user_id)
+        ref = collection_ref.get().to_dict()
+        return ref["count"]
+
+    def increment_user_scan_count(self, user_id: str):
+        collection_ref = self.db.collection("user_scan_count").document(user_id)
+        count = self.get_user_scan_count(user_id)
+        collection_ref.set({"count": count + 1})
+
     def get_user_detail(self, user_id: str) -> Optional[Dict]:
         collection_ref = self.db.collection("user_detail").document(user_id)
         user = collection_ref.get()
@@ -162,6 +176,7 @@ class Firestore:
             "height": height,
             "eat_per_day": eat_per_day,
             "age": age,
+            "has_been_updated": True,
         }
 
     def get_global_id_and_update(self) -> str:
@@ -176,7 +191,6 @@ class Firestore:
 
     def get_food_by_name(self, name: str) -> dict:
         query_param = "Lontong" if name == "Lontong" or name == "lontong" else name
-        print("ini query param", query_param)
 
         collection_ref = self.db.collection("food_collection").document(query_param)
 
@@ -188,6 +202,12 @@ class Firestore:
             "calories_for_2x": result["calories_for_2x"],
             "calories_for_3x": result["calories_for_3x"],
             "calories_for_4x": result["calories_for_4x"],
+            "karbohidrat": result["karbohidrat"],
+            "lemak": result["lemak"],
+            "mineral": result["mineral"],
+            "protein": result["protein"],
+            "vitamin": result["vitamin"],
+            "img": result["img"],
         }
 
     def get_recommendation_food(self, user_id: str, eat_per_day: int) -> Optional[Dict]:

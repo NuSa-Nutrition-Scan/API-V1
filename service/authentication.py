@@ -31,6 +31,7 @@ class AuthService:
             )
 
             self.db.init_user_detail(user.uid)
+            self.db.init_user_scan_count(user.uid)
 
             return result.Created()
 
@@ -71,7 +72,10 @@ class AuthService:
                 "expires_in": obj["expiresIn"],
             }
 
-            return result.OK(resp)
+            creds = self.db.get_user_detail(obj["localId"])
+            response = dict(ChainMap(resp, creds))
+
+            return result.OK(response)
         except requests.exceptions.HTTPError as e:
             code = e.response.status_code
             txt = self._extract_response_text(e.response.text, "message")

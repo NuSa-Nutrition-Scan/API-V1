@@ -27,6 +27,18 @@ if __name__ == "__main__":
 
         for row in csvreader:
             id, name, calories = row[1], row[2], int(row[8])
+            protein, lemak, karbohidrat = (
+                int(round(float(row[9]))),
+                int(round(float(row[10]))),
+                int(round(float(row[11]))),
+            )
+
+            # vitamin ganti serat
+            # mineral pake air
+
+            vitamin = int(round(float(row[12])))
+            mineral = int(round(float(row[7])))
+
             table = collection_ref.document(name)
 
             table.set(
@@ -37,6 +49,11 @@ if __name__ == "__main__":
                     "calories_for_2x": calories * 4,
                     "calories_for_3x": int(calories * 2.7),
                     "calories_for_4x": calories * 2,
+                    "protein": protein,
+                    "lemak": lemak,
+                    "karbohidrat": karbohidrat,
+                    "vitamin": vitamin,
+                    "mineral": mineral,
                 }
             )
 
