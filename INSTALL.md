@@ -8,6 +8,7 @@ Before getting started, make sure you have the following prerequisites installed
 
 - Python 3.10.5 or higher
 - pip 23.1.2 or higher
+- Machine learning instance that run somewhere
 
 ## Steps
 
