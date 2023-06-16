@@ -15,8 +15,10 @@ NuSa API v1 provides the backend API for our application, enabling seamless comm
 - **See history**: Provide access to a user's activity history.
 
 ### Nutrition
-- **Upload photo**: Enable users to upload photos of their meals or food items.
-- **Set max upload**: Limit the number of photo uploads to 10 per day.
+- **Personal food recommendation**: Get the users' food recommendations based on their data
+- **Upload food photo**: Enable users to upload photos of their meals or food items.
+- **Scan food photo**: Scan photo of the food to get the result of it.
+- **Set max upload**: Limit the number of photo scans to 10 per day.
 
 ## Tech Stack
 
